@@ -2,9 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { DocumentType } from '@/types';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Initialize OpenAI client lazily to avoid build-time errors
+let openai: OpenAI | null = null;
+
+function getOpenAIClient() {
+  if (!openai && process.env.OPENAI_API_KEY) {
+    openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+  return openai;
+}
 
 /**
  * AI Document Classification and Analysis
@@ -113,7 +121,12 @@ async function analyzeDocumentByFilename(filename: string) {
  * Analyze document using GPT-4 Vision (for images)
  */
 async function analyzeDocumentWithVision(base64Image: string, mimeType: string) {
-  const completion = await openai.chat.completions.create({
+  const client = getOpenAIClient();
+  if (!client) {
+    throw new Error('OpenAI API key not configured');
+  }
+
+  const completion = await client.chat.completions.create({
     model: 'gpt-4o',
     messages: [
       {
