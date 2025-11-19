@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getSession } from '@/lib/auth';
+import { cookies } from 'next/headers';
+import { sealData } from 'iron-session';
 
 export async function POST(request: Request) {
   try {
@@ -21,11 +22,25 @@ export async function POST(request: Request) {
       );
     }
 
-    // Set session
-    const session = await getSession();
-    session.isAuthenticated = true;
-    session.loginTime = Date.now();
-    await session.save();
+    // Create session data
+    const sessionData = {
+      isAuthenticated: true,
+      loginTime: Date.now(),
+    };
+
+    // Seal the session data
+    const sessionSecret = process.env.SESSION_SECRET || 'complex_password_at_least_32_characters_long_for_security';
+    const sealed = await sealData(sessionData, { password: sessionSecret });
+
+    // Set cookie
+    const cookieStore = await cookies();
+    cookieStore.set('legal_file_auditor_session', sealed, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24, // 24 hours
+      path: '/',
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {
