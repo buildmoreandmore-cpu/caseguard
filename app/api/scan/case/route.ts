@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { isAuthenticated } from '@/lib/auth';
 import { decrypt } from '@/lib/crypto';
 import { EnhancedCasePeerClient } from '@/lib/casepeer-client-enhanced';
-import { generateAuditReport } from '@/lib/audit-engine';
+import { AuditEngine } from '@/lib/audit-engine';
 
 export const maxDuration = 60; // 1 minute for single case
 
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
       const caseData = await client.getCaseWithDocuments(caseId);
 
       // Generate audit report
-      const audit = generateAuditReport(caseData);
+      const audit = AuditEngine.generateAuditReport(caseData);
 
       const criticalMissing = audit.checklist.filter(
         (item) => item.requirement.priority === 'critical' && item.status === 'missing'
@@ -73,7 +73,7 @@ export async function POST(request: Request) {
           documentsAnalyzed: caseData.documents.length,
           criticalMissing,
           requiredMissing,
-          averageScore: audit.overallScore,
+          averageScore: audit.score.overall,
         },
       });
 
