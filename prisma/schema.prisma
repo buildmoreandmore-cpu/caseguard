@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Firm {
+  id                String   @id @default(cuid())
+  name              String
+  contactEmail      String?
+  contactPhone      String?
+
+  // CasePeer Integration
+  casepeerApiUrl    String
+  casepeerApiKey    String   // Will be encrypted before storage
+
+  // Status
+  active            Boolean  @default(true)
+
+  // Timestamps
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  lastScannedAt     DateTime?
+
+  // Audit logs relation
+  auditLogs         AuditLog[]
+
+  @@index([active])
+  @@map("firms")
+}
+
+model AuditLog {
+  id                String   @id @default(cuid())
+  firmId            String
+  firm              Firm     @relation(fields: [firmId], references: [id], onDelete: Cascade)
+
+  // Scan details
+  scanType          String   // "full_firm" | "single_case"
+  casesScanned      Int      @default(0)
+  documentsAnalyzed Int      @default(0)
+
+  // Results summary (no actual documents stored)
+  criticalMissing   Int      @default(0)
+  requiredMissing   Int      @default(0)
+  averageScore      Float?
+
+  // Status
+  status            String   // "in_progress" | "completed" | "failed"
+  errorMessage      String?
+
+  // Timestamps
+  startedAt         DateTime @default(now())
+  completedAt       DateTime?
+
+  @@index([firmId])
+  @@index([startedAt])
+  @@map("audit_logs")
+}

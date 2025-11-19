@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
 import { DocumentType } from '@/types';
 
-// Initialize OpenAI client lazily to avoid build-time errors
-let openai: OpenAI | null = null;
-
+// Lazy-load OpenAI only when needed to avoid build-time errors
 function getOpenAIClient() {
-  if (!openai && process.env.OPENAI_API_KEY) {
-    openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
+  if (!process.env.OPENAI_API_KEY) {
+    return null;
   }
-  return openai;
+
+  // Dynamic import to avoid loading during build
+  const OpenAI = require('openai').default;
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
 }
 
 /**
