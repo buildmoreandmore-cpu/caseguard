@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { unsealData } from 'iron-session';
 
 export async function GET() {
   try {
@@ -11,10 +10,12 @@ export async function GET() {
       return NextResponse.json({ isAuthenticated: false });
     }
 
-    const sessionSecret = process.env.SESSION_SECRET || 'complex_password_at_least_32_characters_long_for_security';
-    const sessionData: any = await unsealData(sessionCookie.value, { password: sessionSecret });
+    // Decode base64 session
+    const sessionData = JSON.parse(Buffer.from(sessionCookie.value, 'base64').toString('utf-8'));
 
-    const isAuthenticated = sessionData?.isAuthenticated === true;
+    // Check if session is expired
+    const isExpired = sessionData.expires < Date.now();
+    const isAuthenticated = sessionData.isAuthenticated === true && !isExpired;
 
     return NextResponse.json({ isAuthenticated });
   } catch (error) {

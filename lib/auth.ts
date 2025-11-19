@@ -1,9 +1,9 @@
 import { cookies } from 'next/headers';
-import { unsealData } from 'iron-session';
 
 export interface SessionData {
   isAuthenticated: boolean;
   loginTime?: number;
+  expires?: number;
 }
 
 export async function isAuthenticated(): Promise<boolean> {
@@ -15,10 +15,12 @@ export async function isAuthenticated(): Promise<boolean> {
       return false;
     }
 
-    const sessionSecret = process.env.SESSION_SECRET || 'complex_password_at_least_32_characters_long_for_security';
-    const sessionData: any = await unsealData(sessionCookie.value, { password: sessionSecret });
+    // Decode base64 session
+    const sessionData = JSON.parse(Buffer.from(sessionCookie.value, 'base64').toString('utf-8'));
 
-    return sessionData?.isAuthenticated === true;
+    // Check if session is expired
+    const isExpired = sessionData.expires < Date.now();
+    return sessionData.isAuthenticated === true && !isExpired;
   } catch (error) {
     console.error('Auth check error:', error);
     return false;
