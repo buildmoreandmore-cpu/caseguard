@@ -6,20 +6,22 @@ export interface SessionData {
   loginTime?: number;
 }
 
-export const sessionOptions: SessionOptions = {
-  password: process.env.SESSION_SECRET || 'complex_password_at_least_32_characters_long_for_security',
-  cookieName: 'legal_file_auditor_session',
-  cookieOptions: {
-    secure: process.env.NODE_ENV === 'production',
-    httpOnly: true,
-    sameSite: 'lax',
-    maxAge: 60 * 60 * 24, // 24 hours
-  },
-};
+function getSessionOptions(): SessionOptions {
+  return {
+    password: process.env.SESSION_SECRET || 'complex_password_at_least_32_characters_long_for_security',
+    cookieName: 'legal_file_auditor_session',
+    cookieOptions: {
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24, // 24 hours
+    },
+  };
+}
 
 export async function getSession(): Promise<IronSession<SessionData>> {
   const cookieStore = await cookies();
-  return getIronSession<SessionData>(cookieStore, sessionOptions);
+  return getIronSession<SessionData>(cookieStore, getSessionOptions());
 }
 
 export async function isAuthenticated(): Promise<boolean> {
