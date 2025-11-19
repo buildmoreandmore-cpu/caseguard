@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 
 export async function POST(request: Request) {
   try {
@@ -7,7 +6,16 @@ export async function POST(request: Request) {
 
     const adminPassword = process.env.ADMIN_PASSWORD;
 
+    console.log('Login attempt:', {
+      hasPassword: !!password,
+      hasAdminPassword: !!adminPassword,
+      passwordLength: password?.length,
+      adminPasswordLength: adminPassword?.length,
+      nodeEnv: process.env.NODE_ENV
+    });
+
     if (!adminPassword) {
+      console.error('ADMIN_PASSWORD not set in environment');
       return NextResponse.json(
         { error: 'Server configuration error' },
         { status: 500 }
