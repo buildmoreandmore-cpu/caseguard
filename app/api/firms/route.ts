@@ -11,25 +11,32 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const firms = await prisma.firm.findMany({
-      orderBy: { createdAt: 'desc' },
-      select: {
-        id: true,
-        name: true,
-        contactEmail: true,
-        contactPhone: true,
-        casepeerApiUrl: true,
-        active: true,
-        createdAt: true,
-        updatedAt: true,
-        lastScannedAt: true,
-        _count: {
-          select: { auditLogs: true }
+    // Try to fetch from database
+    try {
+      const firms = await prisma.firm.findMany({
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          name: true,
+          contactEmail: true,
+          contactPhone: true,
+          casepeerApiUrl: true,
+          active: true,
+          createdAt: true,
+          updatedAt: true,
+          lastScannedAt: true,
+          _count: {
+            select: { auditLogs: true }
+          }
         }
-      }
-    });
+      });
 
-    return NextResponse.json(firms);
+      return NextResponse.json(firms);
+    } catch (dbError) {
+      // Database error - return empty array so frontend can show demo data
+      console.error('Database error, returning empty for demo mode:', dbError);
+      return NextResponse.json([]);
+    }
   } catch (error) {
     console.error('Error fetching firms:', error);
     return NextResponse.json(

@@ -136,33 +136,32 @@ export default function DashboardPage() {
   const fetchFirms = async () => {
     try {
       const response = await fetch('/api/firms');
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch firms');
-      }
-
       const data = await response.json();
 
-      // Handle error response
-      if (data.error) {
-        console.error('Firms API error:', data.error);
-        setFirms([]);
-        setLoading(false);
-        return;
-      }
+      // Check if we should use demo data
+      const shouldUseDemoData =
+        !response.ok ||
+        data.error ||
+        !Array.isArray(data) ||
+        data.length === 0;
 
-      const firms = Array.isArray(data) ? data : [];
-
-      // If no firms exist, show demo data in demo mode
-      if (firms.length === 0 && process.env.NEXT_PUBLIC_CASEPEER_ENABLED !== 'true') {
-        console.log('Using demo firms (no database data)');
+      if (shouldUseDemoData && process.env.NEXT_PUBLIC_CASEPEER_ENABLED !== 'true') {
+        console.log('Using demo firms (no database or empty)');
         setFirms(getDemoFirms());
         setFirmStats(getDemoStats());
         setLoading(false);
         return;
       }
 
-      setFirms(firms);
+      // Handle error response (in live mode)
+      if (data.error || !response.ok) {
+        console.error('Firms API error:', data.error || 'Failed to fetch');
+        setFirms([]);
+        setLoading(false);
+        return;
+      }
+
+      setFirms(Array.isArray(data) ? data : []);
 
       // Fetch stats for each firm
       const statsPromises = (Array.isArray(data) ? data : []).map(async (firm: any) => {
