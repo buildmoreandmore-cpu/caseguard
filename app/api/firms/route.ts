@@ -29,7 +29,7 @@ export async function GET() {
       }
     });
 
-    return NextResponse.json({ firms });
+    return NextResponse.json(firms);
   } catch (error) {
     console.error('Error fetching firms:', error);
     return NextResponse.json(

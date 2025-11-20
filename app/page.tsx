@@ -56,12 +56,25 @@ export default function DashboardPage() {
   const fetchFirms = async () => {
     try {
       const response = await fetch('/api/firms');
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch firms');
+      }
+
       const data = await response.json();
 
-      setFirms(data);
+      // Handle error response
+      if (data.error) {
+        console.error('Firms API error:', data.error);
+        setFirms([]);
+        setLoading(false);
+        return;
+      }
+
+      setFirms(Array.isArray(data) ? data : []);
 
       // Fetch stats for each firm
-      const statsPromises = data.map(async (firm: any) => {
+      const statsPromises = (Array.isArray(data) ? data : []).map(async (firm: any) => {
         try {
           const statsResponse = await fetch(`/api/firms/${firm.id}/stats`);
           const statsData = await statsResponse.json();
@@ -83,6 +96,7 @@ export default function DashboardPage() {
       setFirmStats(statsMap);
     } catch (error) {
       console.error('Error fetching firms:', error);
+      setFirms([]);
     } finally {
       setLoading(false);
     }
