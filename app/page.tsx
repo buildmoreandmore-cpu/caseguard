@@ -22,6 +22,86 @@ interface FirmStats {
   } | null;
 }
 
+// Demo data for when database is not connected
+function getDemoFirms() {
+  return [
+    {
+      id: 'demo-firm-1',
+      name: 'Smith & Associates Law Firm',
+      contactEmail: 'admin@smithlaw.com',
+      contactPhone: '(555) 123-4567',
+      casepeerApiUrl: 'https://demo.casepeer.com/api',
+      active: true,
+      createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+      lastScannedAt: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+      _count: { auditLogs: 1 }
+    },
+    {
+      id: 'demo-firm-2',
+      name: 'Johnson Legal Group',
+      contactEmail: 'contact@johnsonlegal.com',
+      contactPhone: '(555) 234-5678',
+      casepeerApiUrl: 'https://demo.casepeer.com/api',
+      active: true,
+      createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+      lastScannedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+      _count: { auditLogs: 3 }
+    },
+    {
+      id: 'demo-firm-3',
+      name: 'Martinez & Partners LLP',
+      contactEmail: 'info@martinezpartners.com',
+      contactPhone: '(555) 345-6789',
+      casepeerApiUrl: 'https://demo.casepeer.com/api',
+      active: false,
+      createdAt: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+      lastScannedAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
+      _count: { auditLogs: 1 }
+    }
+  ];
+}
+
+function getDemoStats(): Record<string, FirmStats> {
+  return {
+    'demo-firm-1': {
+      firmId: 'demo-firm-1',
+      firmName: 'Smith & Associates Law Firm',
+      active: true,
+      lastScannedAt: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+      latestScan: {
+        casesScanned: 15,
+        criticalMissing: 8,
+        requiredMissing: 12,
+        averageScore: 76.5
+      }
+    },
+    'demo-firm-2': {
+      firmId: 'demo-firm-2',
+      firmName: 'Johnson Legal Group',
+      active: true,
+      lastScannedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+      latestScan: {
+        casesScanned: 22,
+        criticalMissing: 2,
+        requiredMissing: 5,
+        averageScore: 92.3
+      }
+    },
+    'demo-firm-3': {
+      firmId: 'demo-firm-3',
+      firmName: 'Martinez & Partners LLP',
+      active: false,
+      lastScannedAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
+      latestScan: {
+        casesScanned: 8,
+        criticalMissing: 15,
+        requiredMissing: 22,
+        averageScore: 58.3
+      }
+    }
+  };
+}
+
 export default function DashboardPage() {
   const router = useRouter();
   const [firms, setFirms] = useState<any[]>([]);
@@ -71,7 +151,18 @@ export default function DashboardPage() {
         return;
       }
 
-      setFirms(Array.isArray(data) ? data : []);
+      const firms = Array.isArray(data) ? data : [];
+
+      // If no firms exist, show demo data in demo mode
+      if (firms.length === 0 && process.env.NEXT_PUBLIC_CASEPEER_ENABLED !== 'true') {
+        console.log('Using demo firms (no database data)');
+        setFirms(getDemoFirms());
+        setFirmStats(getDemoStats());
+        setLoading(false);
+        return;
+      }
+
+      setFirms(firms);
 
       // Fetch stats for each firm
       const statsPromises = (Array.isArray(data) ? data : []).map(async (firm: any) => {
