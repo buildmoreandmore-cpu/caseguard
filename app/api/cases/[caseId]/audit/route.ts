@@ -22,16 +22,56 @@ function getDemoAuditReport(caseId: string) {
         ]
       },
       checklist: [
-        { name: 'Client Intake Form', status: 'present', importance: 'critical' },
-        { name: 'Signed Retainer Agreement', status: 'present', importance: 'critical' },
-        { name: 'Police Report', status: 'missing', importance: 'critical' },
-        { name: 'Medical Records', status: 'missing', importance: 'critical' },
-        { name: 'Witness Statements', status: 'missing', importance: 'critical' },
-        { name: 'Accident Scene Photos', status: 'incomplete', importance: 'required' },
-        { name: 'Insurance Policy', status: 'incomplete', importance: 'required' },
-        { name: 'Lost Wage Documentation', status: 'missing', importance: 'required' },
-        { name: 'Medical Bills', status: 'incomplete', importance: 'required' },
-        { name: 'Demand Letter', status: 'incomplete', importance: 'required' },
+        {
+          status: 'present',
+          requirement: { name: 'Client Intake Form', priority: 'critical', description: 'Initial client information and case details' },
+          matchedDocuments: [{ id: '1', name: 'Client Intake Form.pdf' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Signed Retainer Agreement', priority: 'critical', description: 'Attorney-client representation agreement' },
+          matchedDocuments: [{ id: '2', name: 'Retainer Agreement.pdf' }]
+        },
+        {
+          status: 'missing',
+          requirement: { name: 'Police Report', priority: 'critical', description: 'Official accident report from law enforcement' },
+          matchedDocuments: []
+        },
+        {
+          status: 'missing',
+          requirement: { name: 'Medical Records', priority: 'critical', description: 'Complete treatment records from all providers' },
+          matchedDocuments: []
+        },
+        {
+          status: 'missing',
+          requirement: { name: 'Witness Statements', priority: 'critical', description: 'Signed statements from all witnesses' },
+          matchedDocuments: []
+        },
+        {
+          status: 'incomplete',
+          requirement: { name: 'Accident Scene Photos', priority: 'required', description: 'Photographic evidence of accident scene' },
+          matchedDocuments: [{ id: '3', name: 'Photo1.jpg' }]
+        },
+        {
+          status: 'incomplete',
+          requirement: { name: 'Insurance Policy', priority: 'required', description: 'Full insurance policy documentation' },
+          matchedDocuments: [{ id: '4', name: 'Policy_Partial.pdf' }]
+        },
+        {
+          status: 'missing',
+          requirement: { name: 'Lost Wage Documentation', priority: 'required', description: 'Employer verification of lost income' },
+          matchedDocuments: []
+        },
+        {
+          status: 'incomplete',
+          requirement: { name: 'Medical Bills', priority: 'required', description: 'Itemized billing from all medical providers' },
+          matchedDocuments: [{ id: '5', name: 'Bills_Jan.pdf' }]
+        },
+        {
+          status: 'incomplete',
+          requirement: { name: 'Demand Letter', priority: 'required', description: 'Formal settlement demand to insurance' },
+          matchedDocuments: [{ id: '6', name: 'Demand_Draft.docx' }]
+        },
       ],
       score: {
         overall: 65,
@@ -56,7 +96,8 @@ function getDemoAuditReport(caseId: string) {
       ],
       phaseReadiness: {
         currentPhase: 'settlement',
-        canProceed: false,
+        currentPhaseComplete: false,
+        readyForNextPhase: false,
         blockers: [
           'Missing critical police report',
           'Incomplete medical documentation',
@@ -78,16 +119,56 @@ function getDemoAuditReport(caseId: string) {
         documents: []
       },
       checklist: [
-        { name: 'Client Intake Form', status: 'present', importance: 'critical' },
-        { name: 'Signed Retainer Agreement', status: 'present', importance: 'critical' },
-        { name: 'Police Report', status: 'present', importance: 'critical' },
-        { name: 'Medical Records', status: 'incomplete', importance: 'critical' },
-        { name: 'Witness Statements', status: 'missing', importance: 'critical' },
-        { name: 'Accident Scene Photos', status: 'present', importance: 'required' },
-        { name: 'Insurance Policy', status: 'present', importance: 'required' },
-        { name: 'Lost Wage Documentation', status: 'missing', importance: 'required' },
-        { name: 'Medical Bills', status: 'incomplete', importance: 'required' },
-        { name: 'Demand Letter', status: 'missing', importance: 'required' },
+        {
+          status: 'present',
+          requirement: { name: 'Client Intake Form', priority: 'critical', description: 'Initial client information and case details' },
+          matchedDocuments: [{ id: '1', name: 'Client Intake Form.pdf' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Signed Retainer Agreement', priority: 'critical', description: 'Attorney-client representation agreement' },
+          matchedDocuments: [{ id: '2', name: 'Retainer Agreement.pdf' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Police Report', priority: 'critical', description: 'Official accident report from law enforcement' },
+          matchedDocuments: [{ id: '3', name: 'Police_Report_123.pdf' }]
+        },
+        {
+          status: 'incomplete',
+          requirement: { name: 'Medical Records', priority: 'critical', description: 'Complete treatment records from all providers' },
+          matchedDocuments: [{ id: '4', name: 'Medical_Records_ER.pdf' }]
+        },
+        {
+          status: 'missing',
+          requirement: { name: 'Witness Statements', priority: 'critical', description: 'Signed statements from all witnesses' },
+          matchedDocuments: []
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Accident Scene Photos', priority: 'required', description: 'Photographic evidence of accident scene' },
+          matchedDocuments: [{ id: '5', name: 'Scene_Photos.zip' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Insurance Policy', priority: 'required', description: 'Full insurance policy documentation' },
+          matchedDocuments: [{ id: '6', name: 'Insurance_Policy.pdf' }]
+        },
+        {
+          status: 'missing',
+          requirement: { name: 'Lost Wage Documentation', priority: 'required', description: 'Employer verification of lost income' },
+          matchedDocuments: []
+        },
+        {
+          status: 'incomplete',
+          requirement: { name: 'Medical Bills', priority: 'required', description: 'Itemized billing from all medical providers' },
+          matchedDocuments: [{ id: '7', name: 'Bills_Q1.pdf' }]
+        },
+        {
+          status: 'missing',
+          requirement: { name: 'Demand Letter', priority: 'required', description: 'Formal settlement demand to insurance' },
+          matchedDocuments: []
+        },
       ],
       score: {
         overall: 72,
@@ -111,7 +192,8 @@ function getDemoAuditReport(caseId: string) {
       ],
       phaseReadiness: {
         currentPhase: 'discovery',
-        canProceed: false,
+        currentPhaseComplete: false,
+        readyForNextPhase: false,
         blockers: [
           'Incomplete medical records',
           'Missing witness statements'
@@ -132,17 +214,61 @@ function getDemoAuditReport(caseId: string) {
         documents: []
       },
       checklist: [
-        { name: 'Client Intake Form', status: 'present', importance: 'critical' },
-        { name: 'Signed Retainer Agreement', status: 'present', importance: 'critical' },
-        { name: 'Police Report', status: 'present', importance: 'critical' },
-        { name: 'Medical Records', status: 'present', importance: 'critical' },
-        { name: 'Witness Statements', status: 'present', importance: 'critical' },
-        { name: 'Accident Scene Photos', status: 'present', importance: 'required' },
-        { name: 'Insurance Policy', status: 'present', importance: 'required' },
-        { name: 'Lost Wage Documentation', status: 'present', importance: 'required' },
-        { name: 'Medical Bills', status: 'present', importance: 'required' },
-        { name: 'Demand Letter', status: 'present', importance: 'required' },
-        { name: 'Settlement Proposal', status: 'incomplete', importance: 'critical' },
+        {
+          status: 'present',
+          requirement: { name: 'Client Intake Form', priority: 'critical', description: 'Initial client information and case details' },
+          matchedDocuments: [{ id: '1', name: 'Client Intake Form.pdf' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Signed Retainer Agreement', priority: 'critical', description: 'Attorney-client representation agreement' },
+          matchedDocuments: [{ id: '2', name: 'Retainer Agreement.pdf' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Police Report', priority: 'critical', description: 'Official accident report from law enforcement' },
+          matchedDocuments: [{ id: '3', name: 'Police_Report_456.pdf' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Medical Records', priority: 'critical', description: 'Complete treatment records from all providers' },
+          matchedDocuments: [{ id: '4', name: 'Medical_Records_Complete.pdf' }, { id: '5', name: 'PT_Records.pdf' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Witness Statements', priority: 'critical', description: 'Signed statements from all witnesses' },
+          matchedDocuments: [{ id: '6', name: 'Witness1.pdf' }, { id: '7', name: 'Witness2.pdf' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Accident Scene Photos', priority: 'required', description: 'Photographic evidence of accident scene' },
+          matchedDocuments: [{ id: '8', name: 'Scene_Photos_Complete.zip' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Insurance Policy', priority: 'required', description: 'Full insurance policy documentation' },
+          matchedDocuments: [{ id: '9', name: 'Insurance_Policy_Full.pdf' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Lost Wage Documentation', priority: 'required', description: 'Employer verification of lost income' },
+          matchedDocuments: [{ id: '10', name: 'Employer_Letter.pdf' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Medical Bills', priority: 'required', description: 'Itemized billing from all medical providers' },
+          matchedDocuments: [{ id: '11', name: 'Bills_Complete.pdf' }]
+        },
+        {
+          status: 'present',
+          requirement: { name: 'Demand Letter', priority: 'required', description: 'Formal settlement demand to insurance' },
+          matchedDocuments: [{ id: '12', name: 'Demand_Letter_Final.pdf' }]
+        },
+        {
+          status: 'incomplete',
+          requirement: { name: 'Settlement Proposal', priority: 'critical', description: 'Proposed settlement terms and documentation' },
+          matchedDocuments: [{ id: '13', name: 'Settlement_Draft.docx' }]
+        },
       ],
       score: {
         overall: 88,
@@ -165,7 +291,8 @@ function getDemoAuditReport(caseId: string) {
       ],
       phaseReadiness: {
         currentPhase: 'settlement',
-        canProceed: true,
+        currentPhaseComplete: false,
+        readyForNextPhase: true,
         blockers: []
       },
       generatedAt: new Date().toISOString()
