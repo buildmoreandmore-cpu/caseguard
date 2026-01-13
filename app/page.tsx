@@ -18,7 +18,7 @@ export default function LandingPage() {
             </div>
             <Link href="/demo">
               <Button className="bg-blue-600 hover:bg-blue-700">
-                Try Demo
+                See Demo
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
@@ -40,7 +40,7 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/demo">
                 <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 h-auto">
-                  Try the Demo
+                  See the Demo
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
@@ -205,7 +205,7 @@ export default function LandingPage() {
           </p>
           <Link href="/demo">
             <Button size="lg" variant="secondary" className="text-lg px-8 py-6 h-auto">
-              Try the Demo Now
+              See the Demo Now
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
