@@ -75,7 +75,7 @@ export default function LandingPage() {
               <div className="text-sm font-semibold text-blue-600 mb-2">Step 1</div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">Connect</h3>
               <p className="text-slate-600">
-                Link your CasePeer account with secure API credentials
+                Connect your legal case management software securely
               </p>
             </div>
 
