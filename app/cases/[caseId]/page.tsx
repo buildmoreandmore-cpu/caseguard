@@ -89,7 +89,7 @@ export default function CaseAuditPage() {
         <Card className="max-w-md">
           <CardContent className="text-center py-12">
             <p className="text-slate-600 mb-4">Audit report not found</p>
-            <Button onClick={() => router.push('/')}>Return to Dashboard</Button>
+            <Button onClick={() => router.push('/demo')}>Return to Demo</Button>
           </CardContent>
         </Card>
       </div>
@@ -103,11 +103,11 @@ export default function CaseAuditPage() {
         <div className="mb-8">
           <Button
             variant="ghost"
-            onClick={() => router.push('/')}
+            onClick={() => router.push('/demo')}
             className="mb-4"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Dashboard
+            Back to Demo
           </Button>
 
           <div className="flex items-start justify-between">
@@ -169,11 +169,11 @@ export default function CaseAuditPage() {
           </Card>
         </div>
 
-        {/* AI Recommendations */}
+        {/* Recommendations */}
         {audit.recommendations.length > 0 && (
           <Card className="mb-8">
             <CardHeader>
-              <CardTitle>AI Recommendations</CardTitle>
+              <CardTitle>Recommendations</CardTitle>
               <CardDescription>
                 Smart insights to improve case file completeness
               </CardDescription>

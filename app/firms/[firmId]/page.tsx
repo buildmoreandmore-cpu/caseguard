@@ -160,8 +160,8 @@ export default function FirmDetailPage() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <p className="text-lg text-slate-600 mb-4">Firm not found</p>
-          <Link href="/">
-            <Button>Return to Dashboard</Button>
+          <Link href="/demo">
+            <Button>Return to Demo</Button>
           </Link>
         </div>
       </div>
@@ -180,10 +180,10 @@ export default function FirmDetailPage() {
         <div className="container mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/">
+              <Link href="/demo">
                 <Button variant="outline" size="lg" className="gap-2">
                   <ArrowLeft className="w-4 h-4" />
-                  Back
+                  Back to Demo
                 </Button>
               </Link>
               <div className="flex items-center gap-3">

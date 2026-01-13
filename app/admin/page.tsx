@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -26,7 +25,6 @@ interface Firm {
 }
 
 export default function AdminPage() {
-  const router = useRouter();
   const [firms, setFirms] = useState<Firm[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -42,24 +40,8 @@ export default function AdminPage() {
   const [success, setSuccess] = useState('');
 
   useEffect(() => {
-    checkAuth();
+    fetchFirms();
   }, []);
-
-  const checkAuth = async () => {
-    try {
-      const response = await fetch('/api/auth/check');
-      const data = await response.json();
-
-      if (!data.isAuthenticated) {
-        router.push('/login');
-        return;
-      }
-
-      fetchFirms();
-    } catch (error) {
-      router.push('/login');
-    }
-  };
 
   const fetchFirms = async () => {
     try {
@@ -145,10 +127,10 @@ export default function AdminPage() {
         <div className="container mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/">
+              <Link href="/demo">
                 <Button variant="outline" size="lg" className="gap-2 h-11 px-4">
                   <ArrowLeft className="w-4 h-4" />
-                  Back to Cases
+                  Back to Demo
                 </Button>
               </Link>
               <div>
