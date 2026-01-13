@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { isAuthenticated } from '@/lib/auth';
 import { encrypt, decrypt } from '@/lib/crypto';
 
 // GET single firm
@@ -9,11 +8,6 @@ export async function GET(
   { params }: { params: Promise<{ firmId: string }> }
 ) {
   try {
-    const authenticated = await isAuthenticated();
-    if (!authenticated) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { firmId } = await params;
 
     const firm = await prisma.firm.findUnique({
@@ -49,11 +43,6 @@ export async function PUT(
   { params }: { params: Promise<{ firmId: string }> }
 ) {
   try {
-    const authenticated = await isAuthenticated();
-    if (!authenticated) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { firmId } = await params;
     const { name, contactEmail, contactPhone, casepeerApiUrl, casepeerApiKey, active } =
       await request.json();
@@ -92,11 +81,6 @@ export async function DELETE(
   { params }: { params: Promise<{ firmId: string }> }
 ) {
   try {
-    const authenticated = await isAuthenticated();
-    if (!authenticated) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { firmId } = await params;
 
     await prisma.firm.delete({
@@ -119,11 +103,6 @@ export async function POST(
   { params }: { params: Promise<{ firmId: string }> }
 ) {
   try {
-    const authenticated = await isAuthenticated();
-    if (!authenticated) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { firmId } = await params;
     const { action } = await request.json();
 

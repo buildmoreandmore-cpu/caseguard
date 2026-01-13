@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { isAuthenticated } from '@/lib/auth';
 import { decrypt } from '@/lib/crypto';
 import { EnhancedCasePeerClient } from '@/lib/casepeer-client-enhanced';
 import { AuditEngine } from '@/lib/audit-engine';
@@ -13,11 +12,6 @@ export const maxDuration = 60; // 1 minute for single case
  */
 export async function POST(request: Request) {
   try {
-    const authenticated = await isAuthenticated();
-    if (!authenticated) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { firmId, caseId } = await request.json();
 
     if (!firmId || !caseId) {

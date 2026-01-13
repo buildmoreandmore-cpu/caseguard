@@ -1,16 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { isAuthenticated } from '@/lib/auth';
-import { encrypt, decrypt } from '@/lib/crypto';
+import { encrypt } from '@/lib/crypto';
 
 // GET all firms
 export async function GET() {
   try {
-    const authenticated = await isAuthenticated();
-    if (!authenticated) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     // Try to fetch from database
     try {
       const firms = await prisma.firm.findMany({
@@ -49,11 +43,6 @@ export async function GET() {
 // POST create new firm
 export async function POST(request: Request) {
   try {
-    const authenticated = await isAuthenticated();
-    if (!authenticated) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { name, contactEmail, contactPhone, casepeerApiUrl, casepeerApiKey } =
       await request.json();
 
