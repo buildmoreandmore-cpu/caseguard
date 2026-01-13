@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Scale, Link2, FileSearch, BarChart3, FileCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Scale, Link2, FileSearch, BarChart3, FileCheck, ArrowRight, AlertTriangle, Clock, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -17,7 +17,7 @@ export default function LandingPage() {
               <span className="text-xl font-bold text-slate-900">CaseGuard</span>
             </div>
             <Link href="/demo">
-              <Button className="bg-blue-600 hover:bg-blue-700">
+              <Button className="bg-blue-600 hover:bg-blue-700 h-11 px-5">
                 See Demo
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -26,16 +26,19 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="py-20 lg:py-28 bg-gradient-to-b from-slate-50 to-white">
+      {/* Hero Section - Lead with empathy */}
+      <section className="py-16 lg:py-24 bg-gradient-to-b from-slate-50 to-white">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-              Automated Legal File Auditing for Personal Injury Firms
+            <p className="text-blue-600 font-semibold text-lg mb-4">
+              For Personal Injury Law Firms
+            </p>
+            <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 leading-tight">
+              Stop losing cases to missing documents
             </h1>
-            <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto">
-              Ensure case file completeness across all litigation phases.
-              Connect to CasePeer and get instant visibility into missing documents.
+            <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+              You know the frustration. A case stalls because someone forgot to request medical records.
+              Or worse, you find out at trial. CaseGuard catches what gets missed.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/demo">
@@ -46,9 +49,46 @@ export default function LandingPage() {
               </Link>
               <Link href="#how-it-works">
                 <Button size="lg" variant="outline" className="text-lg px-8 py-6 h-auto">
-                  See How It Works
+                  How It Works
                 </Button>
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pain Points Section */}
+      <section className="py-16 bg-white border-y border-slate-100">
+        <div className="container mx-auto px-6">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <AlertTriangle className="w-7 h-7 text-red-500" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">Critical gaps found too late</h3>
+                <p className="text-slate-600">
+                  Missing documents surface at the worst possible time
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Clock className="w-7 h-7 text-amber-500" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">Hours spent checking files</h3>
+                <p className="text-slate-600">
+                  Manual audits drain time from actual case work
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <ShieldCheck className="w-7 h-7 text-emerald-500" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">CaseGuard catches it all</h3>
+                <p className="text-slate-600">
+                  Automated scans show exactly what's missing
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -62,7 +102,7 @@ export default function LandingPage() {
               How It Works
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Four simple steps to ensure your case files are complete and ready for every phase
+              Four steps. Complete visibility. No more surprises.
             </p>
           </div>
 
@@ -75,7 +115,7 @@ export default function LandingPage() {
               <div className="text-sm font-semibold text-blue-600 mb-2">Step 1</div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">Connect</h3>
               <p className="text-slate-600">
-                Connect your legal case management software securely
+                Link your case management software securely
               </p>
             </div>
 
@@ -87,7 +127,7 @@ export default function LandingPage() {
               <div className="text-sm font-semibold text-emerald-600 mb-2">Step 2</div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">Scan</h3>
               <p className="text-slate-600">
-                Automated analysis of all case documents and file names
+                Every document analyzed and categorized automatically
               </p>
             </div>
 
@@ -99,7 +139,7 @@ export default function LandingPage() {
               <div className="text-sm font-semibold text-amber-600 mb-2">Step 3</div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">Score</h3>
               <p className="text-slate-600">
-                Get completeness scores for each case by litigation phase
+                See completeness scores for each case phase
               </p>
             </div>
 
@@ -111,82 +151,76 @@ export default function LandingPage() {
               <div className="text-sm font-semibold text-purple-600 mb-2">Step 4</div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">Fix</h3>
               <p className="text-slate-600">
-                Prioritized list of missing documents to complete your files
+                Get a prioritized list of what to request next
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* What You Get Section */}
       <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-              Built for Personal Injury Firms
+              Everything you need to stay ahead
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Everything you need to maintain complete case files throughout the litigation lifecycle
+              Built specifically for personal injury litigation workflows
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <Card className="border-2 hover:shadow-lg transition-shadow">
+            <Card className="border-2 hover:shadow-lg transition-shadow bg-white">
               <CardContent className="pt-6">
-                <CheckCircle2 className="w-10 h-10 text-blue-600 mb-4" />
                 <h3 className="text-lg font-bold text-slate-900 mb-2">Document Classification</h3>
                 <p className="text-slate-600">
-                  Automatically categorizes intake forms, medical records, bills, and court filings
+                  Intake forms, medical records, bills, court filings — automatically sorted
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 hover:shadow-lg transition-shadow">
+            <Card className="border-2 hover:shadow-lg transition-shadow bg-white">
               <CardContent className="pt-6">
-                <CheckCircle2 className="w-10 h-10 text-blue-600 mb-4" />
                 <h3 className="text-lg font-bold text-slate-900 mb-2">5-Phase Tracking</h3>
                 <p className="text-slate-600">
-                  Monitor readiness across Intake, Treatment, Demand, Litigation, and Settlement
+                  Intake, Treatment, Demand, Litigation, Settlement — tracked separately
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 hover:shadow-lg transition-shadow">
+            <Card className="border-2 hover:shadow-lg transition-shadow bg-white">
               <CardContent className="pt-6">
-                <CheckCircle2 className="w-10 h-10 text-blue-600 mb-4" />
-                <h3 className="text-lg font-bold text-slate-900 mb-2">Weighted Scoring</h3>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">Priority Scoring</h3>
                 <p className="text-slate-600">
-                  Critical, required, and recommended documents weighted by importance
+                  Critical documents flagged first, so you know what matters most
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 hover:shadow-lg transition-shadow">
+            <Card className="border-2 hover:shadow-lg transition-shadow bg-white">
               <CardContent className="pt-6">
-                <CheckCircle2 className="w-10 h-10 text-blue-600 mb-4" />
-                <h3 className="text-lg font-bold text-slate-900 mb-2">CasePeer Integration</h3>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">Works With Your Software</h3>
                 <p className="text-slate-600">
-                  Direct sync with your existing case management system
+                  Connects to your existing case management system
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 hover:shadow-lg transition-shadow">
+            <Card className="border-2 hover:shadow-lg transition-shadow bg-white">
               <CardContent className="pt-6">
-                <CheckCircle2 className="w-10 h-10 text-blue-600 mb-4" />
-                <h3 className="text-lg font-bold text-slate-900 mb-2">Multi-Firm Support</h3>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">Multi-Firm Dashboard</h3>
                 <p className="text-slate-600">
-                  Manage multiple law firms from a single dashboard
+                  Manage multiple firms from one place
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 hover:shadow-lg transition-shadow">
+            <Card className="border-2 hover:shadow-lg transition-shadow bg-white">
               <CardContent className="pt-6">
-                <CheckCircle2 className="w-10 h-10 text-blue-600 mb-4" />
-                <h3 className="text-lg font-bold text-slate-900 mb-2">Actionable Insights</h3>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">Clear Recommendations</h3>
                 <p className="text-slate-600">
-                  Smart recommendations on what to request or complete next
+                  Know exactly what to request and when
                 </p>
               </CardContent>
             </Card>
@@ -198,14 +232,15 @@ export default function LandingPage() {
       <section className="py-20 bg-blue-600">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-            Ready to See It in Action?
+            See it in action
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Explore the demo with sample law firms and see how CaseGuard can help ensure your case files are always complete.
+            Explore the demo with sample firms and real audit reports.
+            No signup required.
           </p>
           <Link href="/demo">
             <Button size="lg" variant="secondary" className="text-lg px-8 py-6 h-auto">
-              See the Demo Now
+              See the Demo
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
@@ -223,7 +258,7 @@ export default function LandingPage() {
               <span className="text-lg font-bold text-white">CaseGuard</span>
             </div>
             <p className="text-slate-400 text-sm">
-              Automated Legal File Auditor for Personal Injury Firms
+              Document auditing for personal injury firms
             </p>
           </div>
         </div>
