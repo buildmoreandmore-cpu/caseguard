@@ -19,9 +19,17 @@ model Firm {
   contactEmail      String?
   contactPhone      String?
 
-  // CasePeer Integration
-  casepeerApiUrl    String
-  casepeerApiKey    String   // Will be encrypted before storage
+  // Universal CMS Integration
+  cmsProvider       String   @default("casepeer")  // filevine, casepeer, clio, mycase, custom, etc.
+  cmsApiUrl         String                         // Base API URL
+  cmsApiKey         String                         // Encrypted API key/token
+  cmsApiSecret      String?                        // Encrypted secret (Filevine, etc.)
+  cmsOrgId          String?                        // Organization ID (Filevine, etc.)
+  cmsEndpoints      Json?                          // Custom endpoint mappings for generic adapter
+
+  // Legacy CasePeer fields (for backwards compatibility)
+  casepeerApiUrl    String?  @map("casepeer_api_url")
+  casepeerApiKey    String?  @map("casepeer_api_key")
 
   // Status
   active            Boolean  @default(true)
@@ -35,6 +43,7 @@ model Firm {
   auditLogs         AuditLog[]
 
   @@index([active])
+  @@index([cmsProvider])
   @@map("firms")
 }
 
