@@ -6,6 +6,44 @@ import { AuditEngine } from '@/lib/audit-engine';
 
 export const maxDuration = 300; // 5 minutes for bulk scanning
 
+// Demo scan results for demo firms
+function getDemoScanResults() {
+  const demoCases = [
+    { id: 'case-001', caseNumber: '2024-PI-1001', clientName: 'Sarah Martinez', phase: 'settlement', score: 65, criticalMissing: 3, requiredMissing: 5 },
+    { id: 'case-002', caseNumber: '2024-PI-1002', clientName: 'Michael Johnson', phase: 'discovery', score: 72, criticalMissing: 2, requiredMissing: 4 },
+    { id: 'case-003', caseNumber: '2024-WC-1003', clientName: 'Robert Davis', phase: 'pre_litigation', score: 78, criticalMissing: 1, requiredMissing: 3 },
+    { id: 'case-004', caseNumber: '2024-PI-1004', clientName: 'Emily Wilson', phase: 'litigation', score: 68, criticalMissing: 2, requiredMissing: 5 },
+    { id: 'case-005', caseNumber: '2024-PI-1005', clientName: 'David Brown', phase: 'settlement', score: 82, criticalMissing: 0, requiredMissing: 3 },
+    { id: 'case-006', caseNumber: '2024-PI-1006', clientName: 'Jennifer Lopez', phase: 'treatment', score: 55, criticalMissing: 4, requiredMissing: 6 },
+    { id: 'case-007', caseNumber: '2024-PI-1007', clientName: 'James Williams', phase: 'demand', score: 88, criticalMissing: 0, requiredMissing: 2 },
+    { id: 'case-008', caseNumber: '2024-WC-1008', clientName: 'Patricia Miller', phase: 'treatment', score: 45, criticalMissing: 5, requiredMissing: 7 },
+    { id: 'case-009', caseNumber: '2024-PI-1009', clientName: 'Christopher Garcia', phase: 'intake', score: 35, criticalMissing: 6, requiredMissing: 8 },
+    { id: 'case-010', caseNumber: '2024-PI-1010', clientName: 'Amanda Thompson', phase: 'settlement', score: 92, criticalMissing: 0, requiredMissing: 1 },
+    { id: 'case-011', caseNumber: '2024-PI-1011', clientName: 'Daniel Rodriguez', phase: 'litigation', score: 76, criticalMissing: 1, requiredMissing: 4 },
+    { id: 'case-012', caseNumber: '2024-WC-1012', clientName: 'Nancy Taylor', phase: 'demand', score: 84, criticalMissing: 0, requiredMissing: 2 },
+  ];
+
+  const totalScore = demoCases.reduce((sum, c) => sum + c.score, 0);
+  const totalCritical = demoCases.reduce((sum, c) => sum + c.criticalMissing, 0);
+  const totalRequired = demoCases.reduce((sum, c) => sum + c.requiredMissing, 0);
+
+  return {
+    success: true,
+    auditLogId: 'demo-audit-' + Date.now(),
+    summary: {
+      totalCases: 47,
+      totalDocuments: 1284,
+      averageScore: Math.round(totalScore / demoCases.length),
+      criticalIssues: totalCritical,
+      requiredMissing: totalRequired,
+    },
+    cases: demoCases.map(c => ({
+      ...c,
+      recommendations: ['Request missing medical records', 'Obtain signed authorization forms', 'Follow up on billing statements'],
+    })),
+  };
+}
+
 /**
  * POST /api/scan/firm
  * Scan all cases for a specific firm
@@ -19,6 +57,13 @@ export async function POST(request: Request) {
         { error: 'Firm ID is required' },
         { status: 400 }
       );
+    }
+
+    // Handle demo firms - return mock scan results
+    if (firmId.startsWith('demo-firm-')) {
+      // Simulate a brief delay for realism
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      return NextResponse.json(getDemoScanResults());
     }
 
     // Get firm credentials

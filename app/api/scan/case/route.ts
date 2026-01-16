@@ -6,6 +6,22 @@ import { AuditEngine } from '@/lib/audit-engine';
 
 export const maxDuration = 60; // 1 minute for single case
 
+// Demo case data for demo firms
+const demoCaseData: Record<string, any> = {
+  'case-001': { id: 'case-001', caseNumber: '2024-PI-1001', clientName: 'Sarah Martinez', caseType: 'personal_injury', currentPhase: 'settlement', score: 65, criticalMissing: 3, requiredMissing: 5 },
+  'case-002': { id: 'case-002', caseNumber: '2024-PI-1002', clientName: 'Michael Johnson', caseType: 'personal_injury', currentPhase: 'discovery', score: 72, criticalMissing: 2, requiredMissing: 4 },
+  'case-003': { id: 'case-003', caseNumber: '2024-WC-1003', clientName: 'Robert Davis', caseType: 'workers_compensation', currentPhase: 'pre_litigation', score: 78, criticalMissing: 1, requiredMissing: 3 },
+  'case-004': { id: 'case-004', caseNumber: '2024-PI-1004', clientName: 'Emily Wilson', caseType: 'personal_injury', currentPhase: 'litigation', score: 68, criticalMissing: 2, requiredMissing: 5 },
+  'case-005': { id: 'case-005', caseNumber: '2024-PI-1005', clientName: 'David Brown', caseType: 'personal_injury', currentPhase: 'settlement', score: 82, criticalMissing: 0, requiredMissing: 3 },
+  'case-006': { id: 'case-006', caseNumber: '2024-PI-1006', clientName: 'Jennifer Lopez', caseType: 'personal_injury', currentPhase: 'treatment', score: 55, criticalMissing: 4, requiredMissing: 6 },
+  'case-007': { id: 'case-007', caseNumber: '2024-PI-1007', clientName: 'James Williams', caseType: 'personal_injury', currentPhase: 'demand', score: 88, criticalMissing: 0, requiredMissing: 2 },
+  'case-008': { id: 'case-008', caseNumber: '2024-WC-1008', clientName: 'Patricia Miller', caseType: 'workers_compensation', currentPhase: 'treatment', score: 45, criticalMissing: 5, requiredMissing: 7 },
+  'case-009': { id: 'case-009', caseNumber: '2024-PI-1009', clientName: 'Christopher Garcia', caseType: 'personal_injury', currentPhase: 'intake', score: 35, criticalMissing: 6, requiredMissing: 8 },
+  'case-010': { id: 'case-010', caseNumber: '2024-PI-1010', clientName: 'Amanda Thompson', caseType: 'personal_injury', currentPhase: 'settlement', score: 92, criticalMissing: 0, requiredMissing: 1 },
+  'case-011': { id: 'case-011', caseNumber: '2024-PI-1011', clientName: 'Daniel Rodriguez', caseType: 'personal_injury', currentPhase: 'litigation', score: 76, criticalMissing: 1, requiredMissing: 4 },
+  'case-012': { id: 'case-012', caseNumber: '2024-WC-1012', clientName: 'Nancy Taylor', caseType: 'workers_compensation', currentPhase: 'demand', score: 84, criticalMissing: 0, requiredMissing: 2 },
+};
+
 /**
  * POST /api/scan/case
  * Scan a single case
@@ -19,6 +35,32 @@ export async function POST(request: Request) {
         { error: 'Firm ID and Case ID are required' },
         { status: 400 }
       );
+    }
+
+    // Handle demo firms - return mock scan results
+    if (firmId.startsWith('demo-firm-')) {
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      const caseData = demoCaseData[caseId];
+      if (!caseData) {
+        return NextResponse.json({ error: 'Case not found' }, { status: 404 });
+      }
+
+      return NextResponse.json({
+        success: true,
+        auditLogId: 'demo-audit-' + Date.now(),
+        case: {
+          caseId: caseData.id,
+          caseNumber: caseData.caseNumber,
+          clientName: caseData.clientName,
+          phase: caseData.currentPhase,
+        },
+        audit: {
+          score: { overall: caseData.score, criticalMissing: caseData.criticalMissing, requiredMissing: caseData.requiredMissing },
+          checklist: [],
+          recommendations: ['Request missing medical records', 'Obtain signed authorization forms'],
+        },
+      });
     }
 
     // Get firm credentials
