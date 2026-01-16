@@ -9,86 +9,138 @@ function getDemoCases(firmId: string, page: number, limit: number) {
   const demoCases: Record<string, any[]> = {
     'demo-firm-1': [
       {
-        id: 'case-smith-001',
-        caseNumber: '2024-PI-1234',
+        id: 'case-001',
+        caseNumber: '2024-PI-1001',
         clientName: 'Sarah Martinez',
         caseType: 'personal_injury',
         currentPhase: 'settlement',
-        assignedAttorney: 'John Smith',
+        assignedAttorney: 'John Anderson',
         dateOpened: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
         documents: [],
         audit: { score: 65, criticalMissing: 3, requiredMissing: 5, totalMissing: 8 }
       },
       {
-        id: 'case-smith-002',
-        caseNumber: '2024-PI-1235',
+        id: 'case-002',
+        caseNumber: '2024-PI-1002',
         clientName: 'Michael Johnson',
         caseType: 'personal_injury',
         currentPhase: 'discovery',
-        assignedAttorney: 'John Smith',
+        assignedAttorney: 'John Anderson',
         dateOpened: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
         documents: [],
         audit: { score: 72, criticalMissing: 2, requiredMissing: 4, totalMissing: 6 }
       },
       {
-        id: 'case-smith-003',
-        caseNumber: '2024-WC-789',
+        id: 'case-003',
+        caseNumber: '2024-WC-1003',
         clientName: 'Robert Davis',
         caseType: 'workers_compensation',
         currentPhase: 'pre_litigation',
-        assignedAttorney: 'Jane Doe',
+        assignedAttorney: 'Maria Garcia',
         dateOpened: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
         documents: [],
         audit: { score: 78, criticalMissing: 1, requiredMissing: 3, totalMissing: 4 }
       },
       {
-        id: 'case-smith-004',
-        caseNumber: '2024-PI-1236',
+        id: 'case-004',
+        caseNumber: '2024-PI-1004',
         clientName: 'Emily Wilson',
         caseType: 'personal_injury',
         currentPhase: 'litigation',
-        assignedAttorney: 'John Smith',
+        assignedAttorney: 'John Anderson',
         dateOpened: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
         documents: [],
         audit: { score: 68, criticalMissing: 2, requiredMissing: 5, totalMissing: 7 }
       },
       {
-        id: 'case-smith-005',
-        caseNumber: '2024-PI-1237',
+        id: 'case-005',
+        caseNumber: '2024-PI-1005',
         clientName: 'David Brown',
         caseType: 'personal_injury',
         currentPhase: 'settlement',
-        assignedAttorney: 'Jane Doe',
+        assignedAttorney: 'Maria Garcia',
         dateOpened: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
         documents: [],
         audit: { score: 82, criticalMissing: 0, requiredMissing: 3, totalMissing: 3 }
-      }
-    ],
-    'demo-firm-2': [
+      },
       {
-        id: 'case-johnson-001',
-        caseNumber: '2024-PI-5001',
+        id: 'case-006',
+        caseNumber: '2024-PI-1006',
+        clientName: 'Jennifer Lopez',
+        caseType: 'personal_injury',
+        currentPhase: 'treatment',
+        assignedAttorney: 'John Anderson',
+        dateOpened: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+        documents: [],
+        audit: { score: 55, criticalMissing: 4, requiredMissing: 6, totalMissing: 10 }
+      },
+      {
+        id: 'case-007',
+        caseNumber: '2024-PI-1007',
+        clientName: 'James Williams',
+        caseType: 'personal_injury',
+        currentPhase: 'demand',
+        assignedAttorney: 'Maria Garcia',
+        dateOpened: new Date(Date.now() - 75 * 24 * 60 * 60 * 1000).toISOString(),
+        documents: [],
+        audit: { score: 88, criticalMissing: 0, requiredMissing: 2, totalMissing: 2 }
+      },
+      {
+        id: 'case-008',
+        caseNumber: '2024-WC-1008',
+        clientName: 'Patricia Miller',
+        caseType: 'workers_compensation',
+        currentPhase: 'treatment',
+        assignedAttorney: 'John Anderson',
+        dateOpened: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+        documents: [],
+        audit: { score: 45, criticalMissing: 5, requiredMissing: 7, totalMissing: 12 }
+      },
+      {
+        id: 'case-009',
+        caseNumber: '2024-PI-1009',
+        clientName: 'Christopher Garcia',
+        caseType: 'personal_injury',
+        currentPhase: 'intake',
+        assignedAttorney: 'Maria Garcia',
+        dateOpened: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        documents: [],
+        audit: { score: 35, criticalMissing: 6, requiredMissing: 8, totalMissing: 14 }
+      },
+      {
+        id: 'case-010',
+        caseNumber: '2024-PI-1010',
         clientName: 'Amanda Thompson',
         caseType: 'personal_injury',
         currentPhase: 'settlement',
-        assignedAttorney: 'Mark Johnson',
+        assignedAttorney: 'John Anderson',
         dateOpened: new Date(Date.now() - 120 * 24 * 60 * 60 * 1000).toISOString(),
         documents: [],
-        audit: { score: 88, criticalMissing: 1, requiredMissing: 2, totalMissing: 3 }
+        audit: { score: 92, criticalMissing: 0, requiredMissing: 1, totalMissing: 1 }
       },
       {
-        id: 'case-johnson-002',
-        caseNumber: '2024-WC-5002',
-        clientName: 'Christopher Lee',
-        caseType: 'workers_compensation',
-        currentPhase: 'pre_litigation',
-        assignedAttorney: 'Sarah Johnson',
-        dateOpened: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+        id: 'case-011',
+        caseNumber: '2024-PI-1011',
+        clientName: 'Daniel Rodriguez',
+        caseType: 'personal_injury',
+        currentPhase: 'litigation',
+        assignedAttorney: 'Maria Garcia',
+        dateOpened: new Date(Date.now() - 85 * 24 * 60 * 60 * 1000).toISOString(),
         documents: [],
-        audit: { score: 94, criticalMissing: 0, requiredMissing: 1, totalMissing: 1 }
+        audit: { score: 76, criticalMissing: 1, requiredMissing: 4, totalMissing: 5 }
+      },
+      {
+        id: 'case-012',
+        caseNumber: '2024-WC-1012',
+        clientName: 'Nancy Taylor',
+        caseType: 'workers_compensation',
+        currentPhase: 'demand',
+        assignedAttorney: 'John Anderson',
+        dateOpened: new Date(Date.now() - 55 * 24 * 60 * 60 * 1000).toISOString(),
+        documents: [],
+        audit: { score: 84, criticalMissing: 0, requiredMissing: 2, totalMissing: 2 }
       }
-    ],
-    'demo-firm-3': []
+    ]
   };
 
   const cases = demoCases[firmId] || [];
@@ -106,7 +158,8 @@ function getDemoCases(firmId: string, page: number, limit: number) {
       hasMore: endIndex < cases.length,
     },
     summary: {
-      totalCasesInCasePeer: firmId === 'demo-firm-1' ? 15 : firmId === 'demo-firm-2' ? 22 : 8,
+      totalCasesInCMS: 47,
+      documentsAnalyzed: 1284,
       casesWithIssues: cases.length,
       averageScore: cases.reduce((sum, c) => sum + c.audit.score, 0) / cases.length || 0,
     }

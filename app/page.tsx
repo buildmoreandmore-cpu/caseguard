@@ -1,8 +1,78 @@
 import Link from 'next/link';
-import { Scale, Link2, FileSearch, BarChart3, FileCheck, ArrowRight, AlertTriangle, CheckCircle2, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+
+// SVG Icons
+const ScaleIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+    <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+    <path d="M7 21h10" />
+    <path d="M12 3v18" />
+    <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+  </svg>
+);
+
+const LinkIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+  </svg>
+);
+
+const FileSearchIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+    <circle cx="11.5" cy="14.5" r="2.5" />
+    <path d="M13.25 16.25 15 18" />
+  </svg>
+);
+
+const BarChartIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="20" x2="12" y2="10" />
+    <line x1="18" y1="20" x2="18" y2="4" />
+    <line x1="6" y1="20" x2="6" y2="16" />
+  </svg>
+);
+
+const FileCheckIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+    <path d="m9 15 2 2 4-4" />
+  </svg>
+);
+
+const ArrowRightIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="5" y1="12" x2="19" y2="12" />
+    <polyline points="12 5 19 12 12 19" />
+  </svg>
+);
+
+const AlertIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+    <line x1="12" y1="9" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </svg>
+);
+
+const CheckIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+    <polyline points="22 4 12 14.01 9 11.01" />
+  </svg>
+);
+
+const ShieldIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+  </svg>
+);
 
 const SUPPORTED_CMS = [
   { name: 'Filevine', id: 'filevine' },
@@ -22,14 +92,14 @@ export default function LandingPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
-                <Scale className="w-5 h-5 text-white" />
+                <ScaleIcon className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold text-slate-900">CaseGuard</span>
             </div>
             <Link href="/demo">
               <Button className="bg-slate-900 hover:bg-slate-800 h-11 px-5">
                 See Demo
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRightIcon className="w-4 h-4 ml-2" />
               </Button>
             </Link>
           </div>
@@ -51,7 +121,7 @@ export default function LandingPage() {
               <Link href="/demo">
                 <Button size="lg" className="bg-slate-900 hover:bg-slate-800 text-lg px-8 py-6 h-auto">
                   See the Demo
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  <ArrowRightIcon className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
               <Link href="#how-it-works">
@@ -95,7 +165,7 @@ export default function LandingPage() {
             <Card className="border hover:shadow-md transition-shadow">
               <CardContent className="pt-6">
                 <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
-                  <Link2 className="w-5 h-5 text-slate-700" />
+                  <LinkIcon className="w-5 h-5 text-slate-700" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">Connects to Your CMS</h3>
                 <p className="text-slate-600 text-sm">
@@ -108,7 +178,7 @@ export default function LandingPage() {
             <Card className="border hover:shadow-md transition-shadow">
               <CardContent className="pt-6">
                 <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
-                  <FileSearch className="w-5 h-5 text-slate-700" />
+                  <FileSearchIcon className="w-5 h-5 text-slate-700" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">AI Document Classification</h3>
                 <p className="text-slate-600 text-sm">
@@ -121,7 +191,7 @@ export default function LandingPage() {
             <Card className="border hover:shadow-md transition-shadow">
               <CardContent className="pt-6">
                 <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
-                  <AlertTriangle className="w-5 h-5 text-slate-700" />
+                  <AlertIcon className="w-5 h-5 text-slate-700" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">Finds Missing Documents</h3>
                 <p className="text-slate-600 text-sm">
@@ -134,7 +204,7 @@ export default function LandingPage() {
             <Card className="border hover:shadow-md transition-shadow">
               <CardContent className="pt-6">
                 <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
-                  <BarChart3 className="w-5 h-5 text-slate-700" />
+                  <BarChartIcon className="w-5 h-5 text-slate-700" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">Scores Each Case</h3>
                 <p className="text-slate-600 text-sm">
@@ -147,7 +217,7 @@ export default function LandingPage() {
             <Card className="border hover:shadow-md transition-shadow">
               <CardContent className="pt-6">
                 <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
-                  <FileCheck className="w-5 h-5 text-slate-700" />
+                  <FileCheckIcon className="w-5 h-5 text-slate-700" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">Prioritized Action List</h3>
                 <p className="text-slate-600 text-sm">
@@ -160,7 +230,7 @@ export default function LandingPage() {
             <Card className="border hover:shadow-md transition-shadow">
               <CardContent className="pt-6">
                 <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
-                  <CheckCircle2 className="w-5 h-5 text-slate-700" />
+                  <CheckIcon className="w-5 h-5 text-slate-700" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">Phase Readiness</h3>
                 <p className="text-slate-600 text-sm">
@@ -186,21 +256,38 @@ export default function LandingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {[
-              { step: 1, title: 'Connect', icon: Link2, desc: 'Select your CMS (Filevine, CasePeer, Clio, etc.) and enter your API credentials. We test the connection before saving.' },
-              { step: 2, title: 'Scan', icon: FileSearch, desc: 'CaseGuard pulls your cases and documents, then uses AI to classify each file by document type automatically.' },
-              { step: 3, title: 'Audit', icon: BarChart3, desc: 'Each case is scored against phase-specific checklists. See completeness scores and identify critical gaps instantly.' },
-              { step: 4, title: 'Act', icon: CheckCircle2, desc: 'Get a prioritized list of missing documents for each case. Request what\'s missing, close the gaps, advance your cases.' },
-            ].map((item) => (
-              <div key={item.step} className="text-center bg-white p-6 rounded-xl border">
-                <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <item.icon className="w-6 h-6 text-white" />
-                </div>
-                <div className="text-xs font-semibold text-slate-500 mb-1">Step {item.step}</div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
-                <p className="text-slate-600 text-sm">{item.desc}</p>
+            <div className="text-center bg-white p-6 rounded-xl border">
+              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <LinkIcon className="w-6 h-6 text-white" />
               </div>
-            ))}
+              <div className="text-xs font-semibold text-slate-500 mb-1">Step 1</div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Connect</h3>
+              <p className="text-slate-600 text-sm">Select your CMS (Filevine, CasePeer, Clio, etc.) and enter your API credentials. We test the connection before saving.</p>
+            </div>
+            <div className="text-center bg-white p-6 rounded-xl border">
+              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <FileSearchIcon className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-xs font-semibold text-slate-500 mb-1">Step 2</div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Scan</h3>
+              <p className="text-slate-600 text-sm">CaseGuard pulls your cases and documents, then uses AI to classify each file by document type automatically.</p>
+            </div>
+            <div className="text-center bg-white p-6 rounded-xl border">
+              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <BarChartIcon className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-xs font-semibold text-slate-500 mb-1">Step 3</div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Audit</h3>
+              <p className="text-slate-600 text-sm">Each case is scored against phase-specific checklists. See completeness scores and identify critical gaps instantly.</p>
+            </div>
+            <div className="text-center bg-white p-6 rounded-xl border">
+              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <CheckIcon className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-xs font-semibold text-slate-500 mb-1">Step 4</div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Act</h3>
+              <p className="text-slate-600 text-sm">Get a prioritized list of missing documents for each case. Request what's missing, close the gaps, advance your cases.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -250,24 +337,24 @@ export default function LandingPage() {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white p-6 rounded-xl border">
                 <div className="flex items-center gap-3 mb-4">
-                  <Shield className="w-5 h-5 text-slate-700" />
+                  <ShieldIcon className="w-5 h-5 text-slate-700" />
                   <h3 className="font-semibold text-lg">Security</h3>
                 </div>
                 <ul className="space-y-2 text-slate-600 text-sm">
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                    <CheckIcon className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                     <span>API credentials encrypted at rest</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                    <CheckIcon className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                     <span>Read-only access to your CMS</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                    <CheckIcon className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                     <span>No documents stored—only metadata</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                    <CheckIcon className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                     <span>SOC 2 compliant infrastructure</span>
                   </li>
                 </ul>
@@ -275,24 +362,24 @@ export default function LandingPage() {
 
               <div className="bg-white p-6 rounded-xl border">
                 <div className="flex items-center gap-3 mb-4">
-                  <Link2 className="w-5 h-5 text-slate-700" />
+                  <LinkIcon className="w-5 h-5 text-slate-700" />
                   <h3 className="font-semibold text-lg">Integration</h3>
                 </div>
                 <ul className="space-y-2 text-slate-600 text-sm">
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                    <CheckIcon className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                     <span>Works with any CMS with a REST API</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                    <CheckIcon className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                     <span>Pre-built adapters for Filevine, CasePeer, Clio</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                    <CheckIcon className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                     <span>Custom endpoint configuration available</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                    <CheckIcon className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                     <span>Test connection before saving credentials</span>
                   </li>
                 </ul>
@@ -315,7 +402,7 @@ export default function LandingPage() {
           <Link href="/demo">
             <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100 text-lg px-8 py-6 h-auto font-semibold">
               See the Demo
-              <ArrowRight className="w-5 h-5 ml-2" />
+              <ArrowRightIcon className="w-5 h-5 ml-2" />
             </Button>
           </Link>
         </div>
@@ -326,7 +413,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <Scale className="w-5 h-5 text-slate-400" />
+              <ScaleIcon className="w-5 h-5 text-slate-400" />
               <span className="font-semibold text-white">CaseGuard</span>
             </div>
             <p className="text-slate-500 text-sm">

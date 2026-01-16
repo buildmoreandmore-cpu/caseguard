@@ -119,15 +119,11 @@ export default function FirmDetailPage() {
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return 'text-emerald-600';
-    if (score >= 70) return 'text-amber-600';
-    return 'text-red-600';
+    return 'text-slate-900';
   };
 
   const getScoreBg = (score: number) => {
-    if (score >= 90) return 'bg-emerald-50 border-emerald-200';
-    if (score >= 70) return 'bg-amber-50 border-amber-200';
-    return 'bg-red-50 border-red-200';
+    return 'bg-white border-slate-200';
   };
 
   const formatPhase = (phase: string) => {
@@ -228,56 +224,48 @@ export default function FirmDetailPage() {
 
       <main className="container mx-auto px-6 py-8">
         {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
           {/* Total Cases Card */}
-          <Card className="border-2 shadow-sm">
+          <Card className="border shadow-sm">
             <CardHeader className="pb-4">
-              <div className="flex items-center justify-between mb-2">
-                <CardDescription className="text-base font-medium">Cases with Issues</CardDescription>
-                <FileCheck className="w-5 h-5 text-blue-600" />
-              </div>
-              <CardTitle className="text-5xl font-bold text-slate-900">{cases.length}</CardTitle>
+              <CardDescription className="text-sm font-medium text-slate-500">Cases Flagged</CardDescription>
+              <CardTitle className="text-4xl font-bold text-slate-900">{cases.length}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-slate-600">Requiring document attention</p>
+              <p className="text-sm text-slate-500">Need attention</p>
+            </CardContent>
+          </Card>
+
+          {/* Documents Analyzed Card */}
+          <Card className="border shadow-sm">
+            <CardHeader className="pb-4">
+              <CardDescription className="text-sm font-medium text-slate-500">Documents</CardDescription>
+              <CardTitle className="text-4xl font-bold text-slate-900">1,284</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-slate-500">AI classified</p>
             </CardContent>
           </Card>
 
           {/* Average Score Card */}
-          <Card className="border-2 shadow-sm">
+          <Card className="border shadow-sm">
             <CardHeader className="pb-4">
-              <div className="flex items-center justify-between mb-2">
-                <CardDescription className="text-base font-medium">Average Score</CardDescription>
-                <FileCheck className="w-5 h-5 text-blue-600" />
-              </div>
-              <CardTitle className={`text-5xl font-bold ${getScoreColor(avgScore)}`}>
-                {avgScore}%
-              </CardTitle>
+              <CardDescription className="text-sm font-medium text-slate-500">Average Score</CardDescription>
+              <CardTitle className="text-4xl font-bold text-slate-900">{avgScore}%</CardTitle>
             </CardHeader>
             <CardContent>
-              <Progress value={avgScore} className="h-3" />
+              <Progress value={avgScore} className="h-2" />
             </CardContent>
           </Card>
 
           {/* Critical Cases Card */}
-          <Card className={`border-2 shadow-sm ${
-            criticalCases > 0 ? 'border-red-300 bg-red-50/30' : ''
-          }`}>
+          <Card className="border shadow-sm">
             <CardHeader className="pb-4">
-              <div className="flex items-center justify-between mb-2">
-                <CardDescription className="text-base font-medium">Critical Issues</CardDescription>
-                <AlertTriangle className={`w-5 h-5 ${criticalCases > 0 ? 'text-red-600' : 'text-slate-400'}`} />
-              </div>
-              <CardTitle className="text-5xl font-bold text-slate-900">{criticalCases}</CardTitle>
+              <CardDescription className="text-sm font-medium text-slate-500">Critical Gaps</CardDescription>
+              <CardTitle className="text-4xl font-bold text-slate-900">{criticalCases}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-slate-700 font-medium">
-                {criticalCases > 0 ? (
-                  <span className="text-red-600">Cases need immediate attention</span>
-                ) : (
-                  <span className="text-emerald-600">No critical gaps found</span>
-                )}
-              </p>
+              <p className="text-sm text-slate-500">Immediate action</p>
             </CardContent>
           </Card>
         </div>
@@ -319,92 +307,50 @@ export default function FirmDetailPage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {cases.map(caseData => (
                 <Card
                   key={caseData.id}
-                  className={`border-2 hover:shadow-lg transition-all ${getScoreBg(caseData.audit.score)}`}
+                  className="border hover:shadow-md transition-all"
                 >
-                  <CardHeader className="pb-4">
-                    <div className="flex items-start justify-between gap-4">
+                  <CardContent className="py-5">
+                    <div className="flex items-center justify-between">
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-3 flex-wrap">
-                          <CardTitle className="text-xl text-slate-900">{caseData.clientName}</CardTitle>
-                          <Badge variant="outline" className="font-mono text-sm">{caseData.caseNumber}</Badge>
-                          {caseData.audit.criticalMissing > 0 && (
-                            <Badge variant="destructive" className="gap-1.5">
-                              <AlertTriangle className="w-3.5 h-3.5" />
-                              {caseData.audit.criticalMissing} Critical {caseData.audit.criticalMissing === 1 ? 'Gap' : 'Gaps'}
-                            </Badge>
-                          )}
+                        <div className="flex items-center gap-3 mb-1">
+                          <span className="font-semibold text-slate-900">{caseData.clientName}</span>
+                          <Badge variant="outline" className="font-mono text-xs">{caseData.caseNumber}</Badge>
                         </div>
-                        <CardDescription className="text-base">
-                          {formatCaseType(caseData.caseType)} • {formatPhase(caseData.currentPhase)} Phase
-                        </CardDescription>
+                        <p className="text-sm text-slate-500">
+                          {formatCaseType(caseData.caseType)} • {formatPhase(caseData.currentPhase)} • {caseData.assignedAttorney}
+                        </p>
                       </div>
 
-                      {/* Score Display */}
-                      <div className="text-right flex-shrink-0">
-                        <div className={`text-5xl font-bold leading-none mb-2 ${getScoreColor(caseData.audit.score)}`}>
-                          {caseData.audit.score}
-                          <span className="text-2xl">%</span>
+                      <div className="flex items-center gap-6">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-slate-900">{caseData.audit.score}%</div>
+                          <div className="text-xs text-slate-500">Score</div>
                         </div>
-                        <p className="text-sm font-medium text-slate-600">
-                          {caseData.audit.score >= 90
-                            ? 'Excellent'
-                            : caseData.audit.score >= 70
-                            ? 'Good Progress'
-                            : 'Needs Work'}
-                        </p>
-                      </div>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent>
-                    <div className="flex items-center justify-between gap-4 mb-4">
-                      <div className="space-y-2 text-sm text-slate-700">
-                        <p className="flex items-center gap-2">
-                          <span className="font-medium">Attorney:</span> {caseData.assignedAttorney}
-                        </p>
-                        <p className="flex items-center gap-2">
-                          <span className="font-medium">Opened:</span> {new Date(caseData.dateOpened).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                        </p>
-                        <p className="flex items-center gap-2">
-                          <span className="font-medium">Missing:</span>
-                          <span className="text-red-600 font-bold">
-                            {caseData.audit.totalMissing} document{caseData.audit.totalMissing !== 1 ? 's' : ''}
-                          </span>
-                        </p>
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="lg"
-                          onClick={() => handleSingleCaseScan(caseData.id)}
-                          className="gap-2"
-                        >
-                          <RefreshCw className="w-4 h-4" />
-                          Rescan
-                        </Button>
-                        <Link href={`/cases/${caseData.id}`}>
-                          <Button size="lg" className="px-6">
-                            View Audit Report
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-slate-900">{caseData.audit.criticalMissing}</div>
+                          <div className="text-xs text-slate-500">Critical</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-slate-900">{caseData.audit.totalMissing}</div>
+                          <div className="text-xs text-slate-500">Missing</div>
+                        </div>
+                        <div className="flex items-center gap-2 ml-4">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleSingleCaseScan(caseData.id)}
+                          >
+                            <RefreshCw className="w-3.5 h-3.5" />
                           </Button>
-                        </Link>
+                          <Link href={`/cases/${caseData.id}`}>
+                            <Button size="sm">View Report</Button>
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-
-                    {/* Progress Bar */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-600 font-medium">File Completeness</span>
-                        <span className={`font-bold ${getScoreColor(caseData.audit.score)}`}>
-                          {caseData.audit.score}%
-                        </span>
-                      </div>
-                      <Progress value={caseData.audit.score} className="h-3" />
                     </div>
                   </CardContent>
                 </Card>

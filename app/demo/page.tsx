@@ -27,36 +27,15 @@ function getDemoFirms() {
   return [
     {
       id: 'demo-firm-1',
-      name: 'Smith & Associates Law Firm',
-      contactEmail: 'admin@smithlaw.com',
+      name: 'Anderson & Associates',
+      contactEmail: 'admin@andersonlaw.com',
       contactPhone: '(555) 123-4567',
-      casepeerApiUrl: 'https://demo.casepeer.com/api',
+      cmsProvider: 'filevine',
+      cmsApiUrl: 'https://api.filevine.io',
       active: true,
-      createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-      lastScannedAt: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
-      _count: { auditLogs: 1 }
-    },
-    {
-      id: 'demo-firm-2',
-      name: 'Johnson Legal Group',
-      contactEmail: 'contact@johnsonlegal.com',
-      contactPhone: '(555) 234-5678',
-      casepeerApiUrl: 'https://demo.casepeer.com/api',
-      active: true,
-      createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-      lastScannedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-      _count: { auditLogs: 3 }
-    },
-    {
-      id: 'demo-firm-3',
-      name: 'Martinez & Partners LLP',
-      contactEmail: 'info@martinezpartners.com',
-      contactPhone: '(555) 345-6789',
-      casepeerApiUrl: 'https://demo.casepeer.com/api',
-      active: false,
       createdAt: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
-      lastScannedAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
-      _count: { auditLogs: 1 }
+      lastScannedAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+      _count: { auditLogs: 12 }
     }
   ];
 }
@@ -65,38 +44,14 @@ function getDemoStats(): Record<string, FirmStats> {
   return {
     'demo-firm-1': {
       firmId: 'demo-firm-1',
-      firmName: 'Smith & Associates Law Firm',
+      firmName: 'Anderson & Associates',
       active: true,
-      lastScannedAt: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+      lastScannedAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
       latestScan: {
-        casesScanned: 15,
-        criticalMissing: 8,
-        requiredMissing: 12,
-        averageScore: 76.5
-      }
-    },
-    'demo-firm-2': {
-      firmId: 'demo-firm-2',
-      firmName: 'Johnson Legal Group',
-      active: true,
-      lastScannedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-      latestScan: {
-        casesScanned: 22,
-        criticalMissing: 2,
-        requiredMissing: 5,
-        averageScore: 92.3
-      }
-    },
-    'demo-firm-3': {
-      firmId: 'demo-firm-3',
-      firmName: 'Martinez & Partners LLP',
-      active: false,
-      lastScannedAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
-      latestScan: {
-        casesScanned: 8,
-        criticalMissing: 15,
-        requiredMissing: 22,
-        averageScore: 58.3
+        casesScanned: 47,
+        criticalMissing: 12,
+        requiredMissing: 23,
+        averageScore: 78
       }
     }
   };
@@ -214,116 +169,101 @@ export default function DemoPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <Badge className="text-sm px-3 py-1.5 font-medium bg-amber-100 text-amber-800 border-amber-200">
-                Demo Mode
-              </Badge>
-              <Link href="/">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="gap-2 h-11 px-4"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Back to Home
-                </Button>
-              </Link>
-            </div>
+            <Link href="/">
+              <Button
+                variant="outline"
+                size="lg"
+                className="gap-2 h-11 px-4"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to Home
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
 
       <main className="container mx-auto px-6 py-8">
         {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {/* Active Firms Card */}
-          <Card className="border-2 shadow-sm hover:shadow-md transition-shadow">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+          {/* Cases Scanned Card */}
+          <Card className="border shadow-sm">
             <CardHeader className="pb-4">
-              <div className="flex items-center justify-between mb-2">
-                <CardDescription className="text-base font-medium">Active Firms</CardDescription>
-                <Building2 className="w-5 h-5 text-blue-600" />
-              </div>
-              <CardTitle className="text-5xl font-bold text-slate-900">{activeFirms}</CardTitle>
+              <CardDescription className="text-sm font-medium text-slate-500">Cases Scanned</CardDescription>
+              <CardTitle className="text-4xl font-bold text-slate-900">
+                {Object.values(firmStats).reduce((sum, stats) => sum + (stats.latestScan?.casesScanned || 0), 0)}
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-slate-600">
-                {firms.length - activeFirms > 0 && (
-                  <span className="text-slate-500">
-                    {firms.length - activeFirms} inactive {firms.length - activeFirms === 1 ? 'firm' : 'firms'}
-                  </span>
-                )}
-              </p>
+              <p className="text-sm text-slate-500">From connected CMS</p>
+            </CardContent>
+          </Card>
+
+          {/* Documents Analyzed Card */}
+          <Card className="border shadow-sm">
+            <CardHeader className="pb-4">
+              <CardDescription className="text-sm font-medium text-slate-500">Documents Analyzed</CardDescription>
+              <CardTitle className="text-4xl font-bold text-slate-900">1,284</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-slate-500">AI-classified files</p>
             </CardContent>
           </Card>
 
           {/* Issues Found Card */}
-          <Card className={`border-2 shadow-sm hover:shadow-md transition-shadow ${
-            totalIssues > 0 ? 'border-red-300 bg-red-50/30' : ''
-          }`}>
+          <Card className="border shadow-sm">
             <CardHeader className="pb-4">
-              <div className="flex items-center justify-between mb-2">
-                <CardDescription className="text-base font-medium">Total Issues Found</CardDescription>
-                <AlertTriangle className={`w-5 h-5 ${totalIssues > 0 ? 'text-red-600' : 'text-slate-400'}`} />
-              </div>
-              <CardTitle className="text-5xl font-bold text-slate-900">{totalIssues}</CardTitle>
+              <CardDescription className="text-sm font-medium text-slate-500">Missing Documents</CardDescription>
+              <CardTitle className="text-4xl font-bold text-slate-900">{totalIssues}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-slate-700 font-medium">
-                {totalIssues > 0 ? (
-                  <span className="text-red-600">Across all firms</span>
-                ) : (
-                  <span className="text-emerald-600">All cases are compliant</span>
-                )}
-              </p>
+              <p className="text-sm text-slate-500">Identified gaps</p>
             </CardContent>
           </Card>
 
           {/* Average Score Card */}
-          <Card className="border-2 shadow-sm hover:shadow-md transition-shadow border-emerald-300 bg-emerald-50/30">
+          <Card className="border shadow-sm">
             <CardHeader className="pb-4">
-              <div className="flex items-center justify-between mb-2">
-                <CardDescription className="text-base font-medium">Average Score</CardDescription>
-                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-              </div>
-              <CardTitle className="text-5xl font-bold text-slate-900">{avgScore}%</CardTitle>
+              <CardDescription className="text-sm font-medium text-slate-500">Average Score</CardDescription>
+              <CardTitle className="text-4xl font-bold text-slate-900">{avgScore}%</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-slate-700 font-medium">
-                <span className="text-emerald-600">Overall completeness</span>
-              </p>
+              <p className="text-sm text-slate-500">File completeness</p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Firms List */}
+        {/* Scan Status Banner */}
+        <Card className="border shadow-sm mb-8 bg-slate-50">
+          <CardContent className="py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 bg-slate-900 rounded-full"></div>
+                <span className="font-medium text-slate-900">Last scan completed successfully</span>
+                <span className="text-slate-500">• 1 hour ago</span>
+              </div>
+              <Badge variant="outline" className="text-slate-700">Filevine Connected</Badge>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Firm Section */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-slate-900">
-              Law Firms ({displayedFirms.length})
-            </h2>
-            <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => setShowInactive(!showInactive)}
-                className="gap-2 h-11 px-4"
-              >
-                {showInactive ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                {showInactive ? 'Hide Inactive' : 'Show All'}
-              </Button>
-              <Button
-                size="lg"
-                onClick={() => setShowAddModal(true)}
-                className="gap-2 h-11 px-4 bg-blue-600 hover:bg-blue-700"
-              >
-                <Plus className="w-4 h-4" />
-                Add New Firm
-              </Button>
-            </div>
+            <h2 className="text-xl font-semibold text-slate-900">Connected Firm</h2>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setShowAddModal(true)}
+              className="gap-2 h-10 px-4"
+            >
+              <Plus className="w-4 h-4" />
+              Add Firm
+            </Button>
           </div>
 
           {displayedFirms.length === 0 ? (
-            <Card className="border-2 border-dashed">
+            <Card className="border border-dashed">
               <CardContent className="text-center py-16">
                 <Building2 className="w-16 h-16 text-slate-300 mx-auto mb-4" />
                 <p className="text-lg text-slate-600 mb-2">No firms configured</p>
@@ -339,73 +279,47 @@ export default function DemoPage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="space-y-4">
               {displayedFirms.map(firm => {
                 const stats = firmStats[firm.id];
-                const hasIssues = stats?.latestScan
-                  ? (stats.latestScan.criticalMissing + stats.latestScan.requiredMissing) > 0
-                  : false;
 
                 return (
                   <Link key={firm.id} href={`/firms/${firm.id}`}>
-                    <Card className={`border-2 hover:shadow-lg transition-all cursor-pointer h-full ${
-                      !firm.active ? 'opacity-60 bg-slate-50' : ''
-                    } ${hasIssues ? 'border-red-200 bg-red-50/20' : ''}`}>
-                      <CardHeader className="pb-4">
-                        <div className="flex items-start justify-between gap-2 mb-2">
-                          <CardTitle className="text-xl text-slate-900 flex-1">{firm.name}</CardTitle>
-                          {!firm.active && (
-                            <Badge variant="outline" className="text-xs">Inactive</Badge>
+                    <Card className="border hover:shadow-md transition-all cursor-pointer">
+                      <CardContent className="py-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center">
+                              <Building2 className="w-6 h-6 text-slate-600" />
+                            </div>
+                            <div>
+                              <h3 className="text-lg font-semibold text-slate-900">{firm.name}</h3>
+                              <p className="text-sm text-slate-500">
+                                {stats?.latestScan ? `${stats.latestScan.casesScanned} cases • 1,284 documents analyzed` : 'No scans yet'}
+                              </p>
+                            </div>
+                          </div>
+
+                          {stats?.latestScan && (
+                            <div className="flex items-center gap-8 text-sm">
+                              <div className="text-center">
+                                <div className="text-2xl font-bold text-slate-900">{Math.round(stats.latestScan.averageScore)}%</div>
+                                <div className="text-slate-500">Avg Score</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-2xl font-bold text-slate-900">{stats.latestScan.criticalMissing}</div>
+                                <div className="text-slate-500">Critical</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-2xl font-bold text-slate-900">{stats.latestScan.requiredMissing}</div>
+                                <div className="text-slate-500">Required</div>
+                              </div>
+                              <Button variant="outline" className="ml-4">
+                                View Cases
+                              </Button>
+                            </div>
                           )}
                         </div>
-                        <CardDescription className="text-sm">
-                          {stats?.latestScan ? (
-                            <>
-                              {stats.latestScan.casesScanned} cases scanned
-                            </>
-                          ) : (
-                            'No scans yet'
-                          )}
-                        </CardDescription>
-                      </CardHeader>
-
-                      <CardContent className="space-y-3">
-                        {stats?.latestScan ? (
-                          <>
-                            <div className="flex items-center justify-between text-sm">
-                              <span className="text-slate-600">Average Score</span>
-                              <span className={`font-bold ${
-                                stats.latestScan.averageScore >= 90 ? 'text-emerald-600' :
-                                stats.latestScan.averageScore >= 70 ? 'text-amber-600' :
-                                'text-red-600'
-                              }`}>
-                                {Math.round(stats.latestScan.averageScore)}%
-                              </span>
-                            </div>
-                            <div className="flex items-center justify-between text-sm">
-                              <span className="text-slate-600">Critical Issues</span>
-                              <span className={`font-bold ${
-                                stats.latestScan.criticalMissing > 0 ? 'text-red-600' : 'text-emerald-600'
-                              }`}>
-                                {stats.latestScan.criticalMissing}
-                              </span>
-                            </div>
-                            <div className="pt-2 border-t text-xs text-slate-500">
-                              Last scanned: {stats.lastScannedAt
-                                ? new Date(stats.lastScannedAt).toLocaleDateString('en-US', {
-                                    month: 'short',
-                                    day: 'numeric',
-                                    year: 'numeric'
-                                  })
-                                : 'Never'
-                              }
-                            </div>
-                          </>
-                        ) : (
-                          <div className="text-center py-4">
-                            <p className="text-sm text-slate-500">Click to view and scan cases</p>
-                          </div>
-                        )}
                       </CardContent>
                     </Card>
                   </Link>
