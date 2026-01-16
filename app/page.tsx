@@ -119,13 +119,13 @@ export default function LandingPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-10">
               <Link href="/demo" className="w-full sm:w-auto">
-                <Button size="lg" className="bg-slate-900 hover:bg-slate-800 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 h-auto w-full">
+                <Button size="lg" className="bg-slate-900 hover:bg-slate-800 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 h-auto w-full rounded-lg">
                   See the Demo
                   <ArrowRightIcon className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
               <Link href="#how-it-works" className="w-full sm:w-auto">
-                <Button size="lg" variant="outline" className="text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 h-auto border-2 w-full">
+                <Button size="lg" variant="outline" className="text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 h-auto border-2 w-full rounded-lg">
                   How It Works
                 </Button>
               </Link>
@@ -404,7 +404,7 @@ export default function LandingPage() {
             No signup required.
           </p>
           <Link href="/demo" className="block sm:inline-block">
-            <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 h-auto font-semibold w-full sm:w-auto">
+            <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 h-auto font-semibold w-full sm:w-auto rounded-lg">
               See the Demo
               <ArrowRightIcon className="w-5 h-5 ml-2" />
             </Button>
