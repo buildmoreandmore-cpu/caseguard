@@ -94,7 +94,7 @@ export default function LandingPage() {
               <div className="w-9 h-9 sm:w-10 sm:h-10 bg-slate-900 rounded-xl flex items-center justify-center">
                 <ScaleIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
-              <span className="text-lg sm:text-xl font-bold text-slate-900">CaseGuard</span>
+              <span className="text-lg sm:text-xl font-bold text-slate-900">CaseReady</span>
             </div>
             <Link href="/demo">
               <Button className="bg-slate-900 hover:bg-slate-800 h-9 px-3 sm:h-11 sm:px-5 text-sm sm:text-base">
@@ -149,12 +149,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* What CaseGuard Does */}
+      {/* What CaseReady Does */}
       <section className="py-12 sm:py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
-              What CaseGuard Does
+              What CaseReady Does
             </h2>
             <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
               We connect to your case management system and audit every case file for completeness
@@ -271,7 +271,7 @@ export default function LandingPage() {
               </div>
               <div className="text-xs font-semibold text-slate-500 mb-1">Step 2</div>
               <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-1 sm:mb-2">Scan</h3>
-              <p className="text-slate-600 text-xs sm:text-sm hidden sm:block">CaseGuard pulls your cases and documents, then uses AI to classify each file.</p>
+              <p className="text-slate-600 text-xs sm:text-sm hidden sm:block">CaseReady pulls your cases and documents, then uses AI to classify each file.</p>
               <p className="text-slate-600 text-xs sm:hidden">AI classifies files</p>
             </div>
             <div className="text-center bg-white p-4 sm:p-6 rounded-xl border">
@@ -304,7 +304,7 @@ export default function LandingPage() {
               Personal Injury Case Phases
             </h2>
             <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
-              CaseGuard tracks document requirements across all five phases
+              CaseReady tracks document requirements across all five phases
             </p>
           </div>
 
@@ -418,7 +418,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
             <div className="flex items-center gap-2">
               <ScaleIcon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
-              <span className="font-semibold text-white text-sm sm:text-base">CaseGuard</span>
+              <span className="font-semibold text-white text-sm sm:text-base">CaseReady</span>
             </div>
             <p className="text-slate-500 text-xs sm:text-sm text-center">
               AI-powered document auditing for law firms

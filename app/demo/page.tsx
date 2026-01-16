@@ -164,7 +164,7 @@ export default function DemoPage() {
                 <Scale className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-slate-900">CaseGuard</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-900">CaseReady</h1>
                 <p className="text-xs sm:text-sm text-slate-600 hidden sm:block">Document Audit System</p>
               </div>
             </div>
