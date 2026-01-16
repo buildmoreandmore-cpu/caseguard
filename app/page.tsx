@@ -88,18 +88,18 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="border-b border-slate-200 bg-white sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
-                <ScaleIcon className="w-5 h-5 text-white" />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-slate-900 rounded-xl flex items-center justify-center">
+                <ScaleIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-slate-900">CaseGuard</span>
+              <span className="text-lg sm:text-xl font-bold text-slate-900">CaseGuard</span>
             </div>
             <Link href="/demo">
-              <Button className="bg-slate-900 hover:bg-slate-800 h-11 px-5">
-                See Demo
-                <ArrowRightIcon className="w-4 h-4 ml-2" />
+              <Button className="bg-slate-900 hover:bg-slate-800 h-9 px-3 sm:h-11 sm:px-5 text-sm sm:text-base">
+                Demo
+                <ArrowRightIcon className="w-4 h-4 ml-1.5 sm:ml-2" />
               </Button>
             </Link>
           </div>
@@ -107,41 +107,41 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-16 lg:py-24 bg-slate-50">
-        <div className="container mx-auto px-6">
+      <section className="py-10 sm:py-16 lg:py-24 bg-slate-50">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6 leading-tight">
               AI-Powered Case File Auditing for Personal Injury Firms
             </h1>
-            <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-xl text-slate-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
               Connect your case management software. We scan every document, identify what's missing,
               and show you exactly what to request—before it becomes a problem.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
-              <Link href="/demo">
-                <Button size="lg" className="bg-slate-900 hover:bg-slate-800 text-lg px-8 py-6 h-auto">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-10">
+              <Link href="/demo" className="w-full sm:w-auto">
+                <Button size="lg" className="bg-slate-900 hover:bg-slate-800 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 h-auto w-full">
                   See the Demo
                   <ArrowRightIcon className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
-              <Link href="#how-it-works">
-                <Button size="lg" variant="outline" className="text-lg px-8 py-6 h-auto border-2">
+              <Link href="#how-it-works" className="w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 h-auto border-2 w-full">
                   How It Works
                 </Button>
               </Link>
             </div>
 
             {/* Supported CMS */}
-            <div className="pt-8 border-t border-slate-200">
-              <p className="text-sm text-slate-500 mb-4">Connects to your existing case management software</p>
-              <div className="flex flex-wrap justify-center gap-2">
+            <div className="pt-6 sm:pt-8 border-t border-slate-200">
+              <p className="text-xs sm:text-sm text-slate-500 mb-3 sm:mb-4">Connects to your existing case management software</p>
+              <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
                 {SUPPORTED_CMS.map((cms) => (
-                  <Badge key={cms.id} variant="secondary" className="px-3 py-1.5 text-sm bg-white border">
+                  <Badge key={cms.id} variant="secondary" className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm bg-white border">
                     {cms.name}
                   </Badge>
                 ))}
-                <Badge variant="outline" className="px-3 py-1.5 text-sm">
-                  + Any REST API
+                <Badge variant="outline" className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm">
+                  + Any API
                 </Badge>
               </div>
             </div>
@@ -150,18 +150,18 @@ export default function LandingPage() {
       </section>
 
       {/* What CaseGuard Does */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+      <section className="py-12 sm:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
               What CaseGuard Does
             </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
               We connect to your case management system and audit every case file for completeness
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto">
             <Card className="border hover:shadow-md transition-shadow">
               <CardContent className="pt-6">
                 <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
@@ -244,79 +244,83 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="py-20 bg-slate-50">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+      <section id="how-it-works" className="py-12 sm:py-20 bg-slate-50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
               How It Works
             </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
               Four simple steps to complete visibility into your case files
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            <div className="text-center bg-white p-6 rounded-xl border">
-              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <LinkIcon className="w-6 h-6 text-white" />
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 max-w-5xl mx-auto">
+            <div className="text-center bg-white p-4 sm:p-6 rounded-xl border">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <LinkIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="text-xs font-semibold text-slate-500 mb-1">Step 1</div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Connect</h3>
-              <p className="text-slate-600 text-sm">Select your CMS (Filevine, CasePeer, Clio, etc.) and enter your API credentials. We test the connection before saving.</p>
+              <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-1 sm:mb-2">Connect</h3>
+              <p className="text-slate-600 text-xs sm:text-sm hidden sm:block">Select your CMS (Filevine, CasePeer, Clio, etc.) and enter your API credentials.</p>
+              <p className="text-slate-600 text-xs sm:hidden">Link your CMS</p>
             </div>
-            <div className="text-center bg-white p-6 rounded-xl border">
-              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <FileSearchIcon className="w-6 h-6 text-white" />
+            <div className="text-center bg-white p-4 sm:p-6 rounded-xl border">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <FileSearchIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="text-xs font-semibold text-slate-500 mb-1">Step 2</div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Scan</h3>
-              <p className="text-slate-600 text-sm">CaseGuard pulls your cases and documents, then uses AI to classify each file by document type automatically.</p>
+              <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-1 sm:mb-2">Scan</h3>
+              <p className="text-slate-600 text-xs sm:text-sm hidden sm:block">CaseGuard pulls your cases and documents, then uses AI to classify each file.</p>
+              <p className="text-slate-600 text-xs sm:hidden">AI classifies files</p>
             </div>
-            <div className="text-center bg-white p-6 rounded-xl border">
-              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <BarChartIcon className="w-6 h-6 text-white" />
+            <div className="text-center bg-white p-4 sm:p-6 rounded-xl border">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <BarChartIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="text-xs font-semibold text-slate-500 mb-1">Step 3</div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Audit</h3>
-              <p className="text-slate-600 text-sm">Each case is scored against phase-specific checklists. See completeness scores and identify critical gaps instantly.</p>
+              <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-1 sm:mb-2">Audit</h3>
+              <p className="text-slate-600 text-xs sm:text-sm hidden sm:block">Each case is scored against phase-specific checklists. Identify critical gaps instantly.</p>
+              <p className="text-slate-600 text-xs sm:hidden">Score each case</p>
             </div>
-            <div className="text-center bg-white p-6 rounded-xl border">
-              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <CheckIcon className="w-6 h-6 text-white" />
+            <div className="text-center bg-white p-4 sm:p-6 rounded-xl border">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-900 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <CheckIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="text-xs font-semibold text-slate-500 mb-1">Step 4</div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Act</h3>
-              <p className="text-slate-600 text-sm">Get a prioritized list of missing documents for each case. Request what's missing, close the gaps, advance your cases.</p>
+              <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-1 sm:mb-2">Act</h3>
+              <p className="text-slate-600 text-xs sm:text-sm hidden sm:block">Get a prioritized list of missing documents. Close the gaps, advance your cases.</p>
+              <p className="text-slate-600 text-xs sm:hidden">Request missing docs</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Case Phases */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
+      <section className="py-12 sm:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3 sm:mb-4">
               Personal Injury Case Phases
             </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
               CaseGuard tracks document requirements across all five phases
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3">
               {[
-                { phase: 'Intake', docs: 'Intake forms, fee agreements, authorizations' },
-                { phase: 'Treatment', docs: 'Medical records, bills, wage loss docs' },
-                { phase: 'Demand', docs: 'Demand letters, property damage estimates' },
-                { phase: 'Litigation', docs: 'Complaints, discovery, expert reports' },
-                { phase: 'Settlement', docs: 'Settlement agreements, releases' },
+                { phase: 'Intake', docs: 'Intake forms, fee agreements' },
+                { phase: 'Treatment', docs: 'Medical records, bills' },
+                { phase: 'Demand', docs: 'Demand letters, estimates' },
+                { phase: 'Litigation', docs: 'Complaints, discovery' },
+                { phase: 'Settlement', docs: 'Agreements, releases' },
               ].map((item, idx) => (
-                <div key={item.phase} className="p-4 rounded-lg border bg-slate-50">
+                <div key={item.phase} className="p-3 sm:p-4 rounded-lg border bg-slate-50">
                   <div className="text-xs font-semibold text-slate-500 mb-1">Phase {idx + 1}</div>
-                  <h3 className="font-semibold text-slate-900 mb-1">{item.phase}</h3>
-                  <p className="text-xs text-slate-600">{item.docs}</p>
+                  <h3 className="font-semibold text-slate-900 text-sm sm:text-base mb-1">{item.phase}</h3>
+                  <p className="text-xs text-slate-600 hidden sm:block">{item.docs}</p>
                 </div>
               ))}
             </div>
@@ -325,16 +329,16 @@ export default function LandingPage() {
       </section>
 
       {/* Technical Details */}
-      <section className="py-20 bg-slate-50">
-        <div className="container mx-auto px-6">
+      <section className="py-12 sm:py-20 bg-slate-50">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">
                 Technical Details
               </h2>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
               <div className="bg-white p-6 rounded-xl border">
                 <div className="flex items-center gap-3 mb-4">
                   <ShieldIcon className="w-5 h-5 text-slate-700" />
@@ -390,17 +394,17 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-slate-900">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+      <section className="py-12 sm:py-20 bg-slate-900">
+        <div className="container mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3 sm:mb-4">
             See it in action
           </h2>
-          <p className="text-lg text-slate-400 mb-8 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-slate-400 mb-6 sm:mb-8 max-w-2xl mx-auto">
             Explore the demo with sample firms and real audit reports.
             No signup required.
           </p>
-          <Link href="/demo">
-            <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100 text-lg px-8 py-6 h-auto font-semibold">
+          <Link href="/demo" className="block sm:inline-block">
+            <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 h-auto font-semibold w-full sm:w-auto">
               See the Demo
               <ArrowRightIcon className="w-5 h-5 ml-2" />
             </Button>
@@ -409,15 +413,15 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-6 bg-slate-950">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+      <footer className="py-4 sm:py-6 bg-slate-950">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
             <div className="flex items-center gap-2">
-              <ScaleIcon className="w-5 h-5 text-slate-400" />
-              <span className="font-semibold text-white">CaseGuard</span>
+              <ScaleIcon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
+              <span className="font-semibold text-white text-sm sm:text-base">CaseGuard</span>
             </div>
-            <p className="text-slate-500 text-sm">
-              AI-powered document auditing for personal injury law firms
+            <p className="text-slate-500 text-xs sm:text-sm text-center">
+              AI-powered document auditing for law firms
             </p>
           </div>
         </div>
