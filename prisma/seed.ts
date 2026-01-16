@@ -16,6 +16,11 @@ async function main() {
       name: 'Smith & Associates Law Firm',
       contactEmail: 'admin@smithlaw.com',
       contactPhone: '(555) 123-4567',
+      // Universal CMS fields
+      cmsProvider: 'casepeer',
+      cmsApiUrl: 'https://demo.casepeer.com/api',
+      cmsApiKey: encrypt('demo-api-key-smith'),
+      // Legacy fields (for backwards compatibility)
       casepeerApiUrl: 'https://demo.casepeer.com/api',
       casepeerApiKey: encrypt('demo-api-key-smith'),
       active: true,
@@ -65,6 +70,11 @@ async function main() {
       name: 'Johnson Legal Group',
       contactEmail: 'contact@johnsonlegal.com',
       contactPhone: '(555) 234-5678',
+      // Universal CMS fields
+      cmsProvider: 'filevine',
+      cmsApiUrl: 'https://api.filevine.io',
+      cmsApiKey: encrypt('demo-api-key-johnson'),
+      // Legacy fields
       casepeerApiUrl: 'https://demo.casepeer.com/api',
       casepeerApiKey: encrypt('demo-api-key-johnson'),
       active: true,
@@ -72,7 +82,7 @@ async function main() {
     },
   });
   console.log('   ✓ Firm added 30 days ago');
-  console.log('   ✓ Status: Active');
+  console.log('   ✓ Status: Active (uses Filevine)');
   console.log('   ✓ 22 clients with case files\n');
 
   // Create multiple scans for Firm 2 (showing improvement over time)
@@ -154,6 +164,11 @@ async function main() {
       name: 'Martinez & Partners LLP',
       contactEmail: 'info@martinezpartners.com',
       contactPhone: '(555) 345-6789',
+      // Universal CMS fields
+      cmsProvider: 'clio',
+      cmsApiUrl: 'https://app.clio.com/api/v4',
+      cmsApiKey: encrypt('demo-api-key-martinez'),
+      // Legacy fields
       casepeerApiUrl: 'https://demo.casepeer.com/api',
       casepeerApiKey: encrypt('demo-api-key-martinez'),
       active: false,
@@ -197,11 +212,9 @@ async function main() {
   console.log('   • 45 total cases');
   console.log('   • 778 total documents analyzed\n');
   console.log('🎯 Demo Scenario:');
-  console.log('   1. Smith & Associates: Just added, first scan complete');
-  console.log('   2. Johnson Legal Group: Established client, improving over time');
-  console.log('   3. Martinez & Partners: Inactive client for reference\n');
-  console.log('🔑 Login at: https://legal-file-auditor.vercel.app');
-  console.log('   Password: CaseGuard2025\n');
+  console.log('   1. Smith & Associates: CasePeer integration');
+  console.log('   2. Johnson Legal Group: Filevine integration');
+  console.log('   3. Martinez & Partners: Clio integration (inactive)\n');
 }
 
 main()
