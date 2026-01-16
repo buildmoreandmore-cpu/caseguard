@@ -2,304 +2,92 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCasePeerClient } from '@/lib/casepeer-client';
 import { AuditEngine } from '@/lib/audit-engine';
 
-// Demo audit reports for demo cases
-function getDemoAuditReport(caseId: string) {
-  const demoAudits: Record<string, any> = {
-    'case-smith-001': {
-      caseId: 'case-smith-001',
-      case: {
-        id: 'case-smith-001',
-        caseNumber: '2024-PI-1234',
-        clientName: 'Sarah Martinez',
-        caseType: 'personal_injury',
-        currentPhase: 'settlement',
-        assignedAttorney: 'John Smith',
-        dateOpened: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
-        documents: [
-          { id: '1', name: 'Client Intake Form', uploadedAt: new Date().toISOString() },
-          { id: '2', name: 'Signed Retainer Agreement', uploadedAt: new Date().toISOString() },
-          { id: '3', name: 'Insurance Claim Letter', uploadedAt: new Date().toISOString() },
-        ]
-      },
-      checklist: [
-        {
-          status: 'present',
-          requirement: { name: 'Client Intake Form', priority: 'critical', description: 'Initial client information and case details' },
-          matchedDocuments: [{ id: '1', name: 'Client Intake Form.pdf' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Signed Retainer Agreement', priority: 'critical', description: 'Attorney-client representation agreement' },
-          matchedDocuments: [{ id: '2', name: 'Retainer Agreement.pdf' }]
-        },
-        {
-          status: 'missing',
-          requirement: { name: 'Police Report', priority: 'critical', description: 'Official accident report from law enforcement' },
-          matchedDocuments: []
-        },
-        {
-          status: 'missing',
-          requirement: { name: 'Medical Records', priority: 'critical', description: 'Complete treatment records from all providers' },
-          matchedDocuments: []
-        },
-        {
-          status: 'missing',
-          requirement: { name: 'Witness Statements', priority: 'critical', description: 'Signed statements from all witnesses' },
-          matchedDocuments: []
-        },
-        {
-          status: 'incomplete',
-          requirement: { name: 'Accident Scene Photos', priority: 'required', description: 'Photographic evidence of accident scene' },
-          matchedDocuments: [{ id: '3', name: 'Photo1.jpg' }]
-        },
-        {
-          status: 'incomplete',
-          requirement: { name: 'Insurance Policy', priority: 'required', description: 'Full insurance policy documentation' },
-          matchedDocuments: [{ id: '4', name: 'Policy_Partial.pdf' }]
-        },
-        {
-          status: 'missing',
-          requirement: { name: 'Lost Wage Documentation', priority: 'required', description: 'Employer verification of lost income' },
-          matchedDocuments: []
-        },
-        {
-          status: 'incomplete',
-          requirement: { name: 'Medical Bills', priority: 'required', description: 'Itemized billing from all medical providers' },
-          matchedDocuments: [{ id: '5', name: 'Bills_Jan.pdf' }]
-        },
-        {
-          status: 'incomplete',
-          requirement: { name: 'Demand Letter', priority: 'required', description: 'Formal settlement demand to insurance' },
-          matchedDocuments: [{ id: '6', name: 'Demand_Draft.docx' }]
-        },
-      ],
-      score: {
-        overall: 65,
-        criticalMissing: 3,
-        requiredMissing: 5,
-        recommendedMissing: 2,
-        byPhase: {
-          intake: 85,
-          investigation: 45,
-          treatment: 60,
-          demand: 50,
-          litigation: 0,
-          settlement: 70
-        }
-      },
-      recommendations: [
-        'URGENT: Obtain police report immediately - required for case prosecution',
-        'URGENT: Request complete medical records from all treating physicians',
-        'URGENT: Interview and document all witnesses while memories are fresh',
-        'Collect all accident scene photographs and diagrams',
-        'Gather complete lost wage documentation from employer'
-      ],
-      phaseReadiness: {
-        currentPhase: 'settlement',
-        currentPhaseComplete: false,
-        readyForNextPhase: false,
-        blockers: [
-          'Missing critical police report',
-          'Incomplete medical documentation',
-          'No witness statements on file'
-        ]
-      },
-      generatedAt: new Date().toISOString()
-    },
-    'case-smith-002': {
-      caseId: 'case-smith-002',
-      case: {
-        id: 'case-smith-002',
-        caseNumber: '2024-PI-1235',
-        clientName: 'Michael Johnson',
-        caseType: 'personal_injury',
-        currentPhase: 'discovery',
-        assignedAttorney: 'John Smith',
-        dateOpened: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-        documents: []
-      },
-      checklist: [
-        {
-          status: 'present',
-          requirement: { name: 'Client Intake Form', priority: 'critical', description: 'Initial client information and case details' },
-          matchedDocuments: [{ id: '1', name: 'Client Intake Form.pdf' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Signed Retainer Agreement', priority: 'critical', description: 'Attorney-client representation agreement' },
-          matchedDocuments: [{ id: '2', name: 'Retainer Agreement.pdf' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Police Report', priority: 'critical', description: 'Official accident report from law enforcement' },
-          matchedDocuments: [{ id: '3', name: 'Police_Report_123.pdf' }]
-        },
-        {
-          status: 'incomplete',
-          requirement: { name: 'Medical Records', priority: 'critical', description: 'Complete treatment records from all providers' },
-          matchedDocuments: [{ id: '4', name: 'Medical_Records_ER.pdf' }]
-        },
-        {
-          status: 'missing',
-          requirement: { name: 'Witness Statements', priority: 'critical', description: 'Signed statements from all witnesses' },
-          matchedDocuments: []
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Accident Scene Photos', priority: 'required', description: 'Photographic evidence of accident scene' },
-          matchedDocuments: [{ id: '5', name: 'Scene_Photos.zip' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Insurance Policy', priority: 'required', description: 'Full insurance policy documentation' },
-          matchedDocuments: [{ id: '6', name: 'Insurance_Policy.pdf' }]
-        },
-        {
-          status: 'missing',
-          requirement: { name: 'Lost Wage Documentation', priority: 'required', description: 'Employer verification of lost income' },
-          matchedDocuments: []
-        },
-        {
-          status: 'incomplete',
-          requirement: { name: 'Medical Bills', priority: 'required', description: 'Itemized billing from all medical providers' },
-          matchedDocuments: [{ id: '7', name: 'Bills_Q1.pdf' }]
-        },
-        {
-          status: 'missing',
-          requirement: { name: 'Demand Letter', priority: 'required', description: 'Formal settlement demand to insurance' },
-          matchedDocuments: []
-        },
-      ],
-      score: {
-        overall: 72,
-        criticalMissing: 2,
-        requiredMissing: 4,
-        recommendedMissing: 1,
-        byPhase: {
-          intake: 90,
-          investigation: 80,
-          treatment: 65,
-          demand: 40,
-          litigation: 0,
-          settlement: 0
-        }
-      },
-      recommendations: [
-        'Complete medical records collection from all providers',
-        'Interview and document witness testimony',
-        'Obtain lost wage documentation from employer',
-        'Finalize medical bills compilation'
-      ],
-      phaseReadiness: {
-        currentPhase: 'discovery',
-        currentPhaseComplete: false,
-        readyForNextPhase: false,
-        blockers: [
-          'Incomplete medical records',
-          'Missing witness statements'
-        ]
-      },
-      generatedAt: new Date().toISOString()
-    },
-    'case-johnson-001': {
-      caseId: 'case-johnson-001',
-      case: {
-        id: 'case-johnson-001',
-        caseNumber: '2024-PI-5001',
-        clientName: 'Amanda Thompson',
-        caseType: 'personal_injury',
-        currentPhase: 'settlement',
-        assignedAttorney: 'Mark Johnson',
-        dateOpened: new Date(Date.now() - 120 * 24 * 60 * 60 * 1000).toISOString(),
-        documents: []
-      },
-      checklist: [
-        {
-          status: 'present',
-          requirement: { name: 'Client Intake Form', priority: 'critical', description: 'Initial client information and case details' },
-          matchedDocuments: [{ id: '1', name: 'Client Intake Form.pdf' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Signed Retainer Agreement', priority: 'critical', description: 'Attorney-client representation agreement' },
-          matchedDocuments: [{ id: '2', name: 'Retainer Agreement.pdf' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Police Report', priority: 'critical', description: 'Official accident report from law enforcement' },
-          matchedDocuments: [{ id: '3', name: 'Police_Report_456.pdf' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Medical Records', priority: 'critical', description: 'Complete treatment records from all providers' },
-          matchedDocuments: [{ id: '4', name: 'Medical_Records_Complete.pdf' }, { id: '5', name: 'PT_Records.pdf' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Witness Statements', priority: 'critical', description: 'Signed statements from all witnesses' },
-          matchedDocuments: [{ id: '6', name: 'Witness1.pdf' }, { id: '7', name: 'Witness2.pdf' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Accident Scene Photos', priority: 'required', description: 'Photographic evidence of accident scene' },
-          matchedDocuments: [{ id: '8', name: 'Scene_Photos_Complete.zip' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Insurance Policy', priority: 'required', description: 'Full insurance policy documentation' },
-          matchedDocuments: [{ id: '9', name: 'Insurance_Policy_Full.pdf' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Lost Wage Documentation', priority: 'required', description: 'Employer verification of lost income' },
-          matchedDocuments: [{ id: '10', name: 'Employer_Letter.pdf' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Medical Bills', priority: 'required', description: 'Itemized billing from all medical providers' },
-          matchedDocuments: [{ id: '11', name: 'Bills_Complete.pdf' }]
-        },
-        {
-          status: 'present',
-          requirement: { name: 'Demand Letter', priority: 'required', description: 'Formal settlement demand to insurance' },
-          matchedDocuments: [{ id: '12', name: 'Demand_Letter_Final.pdf' }]
-        },
-        {
-          status: 'incomplete',
-          requirement: { name: 'Settlement Proposal', priority: 'critical', description: 'Proposed settlement terms and documentation' },
-          matchedDocuments: [{ id: '13', name: 'Settlement_Draft.docx' }]
-        },
-      ],
-      score: {
-        overall: 88,
-        criticalMissing: 1,
-        requiredMissing: 2,
-        recommendedMissing: 0,
-        byPhase: {
-          intake: 100,
-          investigation: 100,
-          treatment: 100,
-          demand: 95,
-          litigation: 0,
-          settlement: 75
-        }
-      },
-      recommendations: [
-        'Finalize settlement proposal documentation',
-        'Review and prepare final settlement documents',
-        'Schedule settlement conference'
-      ],
-      phaseReadiness: {
-        currentPhase: 'settlement',
-        currentPhaseComplete: false,
-        readyForNextPhase: true,
-        blockers: []
-      },
-      generatedAt: new Date().toISOString()
-    }
-  };
+// Demo case metadata
+const demoCases: Record<string, { clientName: string; caseNumber: string; caseType: string; currentPhase: string; assignedAttorney: string; score: number; criticalMissing: number; requiredMissing: number }> = {
+  'case-001': { clientName: 'Sarah Martinez', caseNumber: '2024-PI-1001', caseType: 'personal_injury', currentPhase: 'settlement', assignedAttorney: 'John Anderson', score: 65, criticalMissing: 3, requiredMissing: 5 },
+  'case-002': { clientName: 'Michael Johnson', caseNumber: '2024-PI-1002', caseType: 'personal_injury', currentPhase: 'discovery', assignedAttorney: 'John Anderson', score: 72, criticalMissing: 2, requiredMissing: 4 },
+  'case-003': { clientName: 'Robert Davis', caseNumber: '2024-WC-1003', caseType: 'workers_compensation', currentPhase: 'pre_litigation', assignedAttorney: 'Maria Garcia', score: 78, criticalMissing: 1, requiredMissing: 3 },
+  'case-004': { clientName: 'Emily Wilson', caseNumber: '2024-PI-1004', caseType: 'personal_injury', currentPhase: 'litigation', assignedAttorney: 'John Anderson', score: 68, criticalMissing: 2, requiredMissing: 5 },
+  'case-005': { clientName: 'David Brown', caseNumber: '2024-PI-1005', caseType: 'personal_injury', currentPhase: 'settlement', assignedAttorney: 'Maria Garcia', score: 82, criticalMissing: 0, requiredMissing: 3 },
+  'case-006': { clientName: 'Jennifer Lopez', caseNumber: '2024-PI-1006', caseType: 'personal_injury', currentPhase: 'treatment', assignedAttorney: 'John Anderson', score: 55, criticalMissing: 4, requiredMissing: 6 },
+  'case-007': { clientName: 'James Williams', caseNumber: '2024-PI-1007', caseType: 'personal_injury', currentPhase: 'demand', assignedAttorney: 'Maria Garcia', score: 88, criticalMissing: 0, requiredMissing: 2 },
+  'case-008': { clientName: 'Patricia Miller', caseNumber: '2024-WC-1008', caseType: 'workers_compensation', currentPhase: 'treatment', assignedAttorney: 'John Anderson', score: 45, criticalMissing: 5, requiredMissing: 7 },
+  'case-009': { clientName: 'Christopher Garcia', caseNumber: '2024-PI-1009', caseType: 'personal_injury', currentPhase: 'intake', assignedAttorney: 'Maria Garcia', score: 35, criticalMissing: 6, requiredMissing: 8 },
+  'case-010': { clientName: 'Amanda Thompson', caseNumber: '2024-PI-1010', caseType: 'personal_injury', currentPhase: 'settlement', assignedAttorney: 'John Anderson', score: 92, criticalMissing: 0, requiredMissing: 1 },
+  'case-011': { clientName: 'Daniel Rodriguez', caseNumber: '2024-PI-1011', caseType: 'personal_injury', currentPhase: 'litigation', assignedAttorney: 'Maria Garcia', score: 76, criticalMissing: 1, requiredMissing: 4 },
+  'case-012': { clientName: 'Nancy Taylor', caseNumber: '2024-WC-1012', caseType: 'workers_compensation', currentPhase: 'demand', assignedAttorney: 'John Anderson', score: 84, criticalMissing: 0, requiredMissing: 2 },
+};
 
-  return demoAudits[caseId] || null;
+// Generate a demo audit report dynamically based on case metadata
+function getDemoAuditReport(caseId: string) {
+  const caseInfo = demoCases[caseId];
+  if (!caseInfo) return null;
+
+  const { clientName, caseNumber, caseType, currentPhase, assignedAttorney, score, criticalMissing, requiredMissing } = caseInfo;
+
+  // Generate checklist based on score
+  const checklist = [
+    { status: score > 30 ? 'present' : 'missing', requirement: { name: 'Client Intake Form', priority: 'critical', description: 'Initial client information and case details' }, matchedDocuments: score > 30 ? [{ id: '1', name: 'Intake_Form.pdf' }] : [] },
+    { status: score > 40 ? 'present' : 'missing', requirement: { name: 'Signed Retainer Agreement', priority: 'critical', description: 'Attorney-client representation agreement' }, matchedDocuments: score > 40 ? [{ id: '2', name: 'Retainer.pdf' }] : [] },
+    { status: criticalMissing > 2 ? 'missing' : 'present', requirement: { name: 'Police Report', priority: 'critical', description: 'Official accident report from law enforcement' }, matchedDocuments: criticalMissing > 2 ? [] : [{ id: '3', name: 'Police_Report.pdf' }] },
+    { status: criticalMissing > 1 ? 'incomplete' : 'present', requirement: { name: 'Medical Records', priority: 'critical', description: 'Complete treatment records from all providers' }, matchedDocuments: [{ id: '4', name: 'Medical_Records.pdf' }] },
+    { status: criticalMissing > 0 ? 'missing' : 'present', requirement: { name: 'Witness Statements', priority: 'critical', description: 'Signed statements from all witnesses' }, matchedDocuments: criticalMissing > 0 ? [] : [{ id: '5', name: 'Witness_Statement.pdf' }] },
+    { status: requiredMissing > 4 ? 'missing' : 'present', requirement: { name: 'Accident Scene Photos', priority: 'required', description: 'Photographic evidence of accident scene' }, matchedDocuments: requiredMissing > 4 ? [] : [{ id: '6', name: 'Photos.zip' }] },
+    { status: requiredMissing > 3 ? 'incomplete' : 'present', requirement: { name: 'Insurance Policy', priority: 'required', description: 'Full insurance policy documentation' }, matchedDocuments: [{ id: '7', name: 'Insurance.pdf' }] },
+    { status: requiredMissing > 2 ? 'missing' : 'present', requirement: { name: 'Lost Wage Documentation', priority: 'required', description: 'Employer verification of lost income' }, matchedDocuments: requiredMissing > 2 ? [] : [{ id: '8', name: 'Wage_Letter.pdf' }] },
+    { status: requiredMissing > 1 ? 'incomplete' : 'present', requirement: { name: 'Medical Bills', priority: 'required', description: 'Itemized billing from all medical providers' }, matchedDocuments: [{ id: '9', name: 'Bills.pdf' }] },
+    { status: requiredMissing > 0 ? 'missing' : 'present', requirement: { name: 'Demand Letter', priority: 'required', description: 'Formal settlement demand to insurance' }, matchedDocuments: requiredMissing > 0 ? [] : [{ id: '10', name: 'Demand.pdf' }] },
+  ];
+
+  const recommendations = [];
+  if (criticalMissing > 0) recommendations.push('URGENT: Obtain missing critical documents immediately');
+  if (criticalMissing > 2) recommendations.push('Request police report from law enforcement');
+  if (criticalMissing > 1) recommendations.push('Complete medical records collection from all providers');
+  if (requiredMissing > 3) recommendations.push('Gather accident scene documentation and photos');
+  if (requiredMissing > 2) recommendations.push('Obtain lost wage verification from employer');
+  if (requiredMissing > 0) recommendations.push('Prepare and finalize demand letter');
+  if (recommendations.length === 0) recommendations.push('Case file is well-documented. Continue monitoring for updates.');
+
+  return {
+    caseId,
+    case: {
+      id: caseId,
+      caseNumber,
+      clientName,
+      caseType,
+      currentPhase,
+      assignedAttorney,
+      dateOpened: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
+      documents: []
+    },
+    checklist,
+    score: {
+      overall: score,
+      criticalMissing,
+      requiredMissing,
+      recommendedMissing: Math.max(0, Math.floor((100 - score) / 10) - criticalMissing - requiredMissing),
+      byPhase: {
+        intake: Math.min(100, score + 20),
+        investigation: Math.min(100, score + 10),
+        treatment: score,
+        demand: Math.max(0, score - 10),
+        litigation: currentPhase === 'litigation' ? score : 0,
+        settlement: currentPhase === 'settlement' ? score : 0
+      }
+    },
+    recommendations,
+    phaseReadiness: {
+      currentPhase,
+      currentPhaseComplete: criticalMissing === 0,
+      readyForNextPhase: criticalMissing === 0 && requiredMissing <= 2,
+      blockers: criticalMissing > 0
+        ? ['Missing critical documents', 'Incomplete case file']
+        : requiredMissing > 2
+        ? ['Some required documents still needed']
+        : []
+    },
+    generatedAt: new Date().toISOString()
+  };
 }
 
 /**
