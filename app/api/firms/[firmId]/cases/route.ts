@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { decrypt } from '@/lib/crypto';
-import { EnhancedCasePeerClient } from '@/lib/casepeer-client-enhanced';
+import { createCMSAdapter, CMSConfig, CMSProvider } from '@/lib/cms-adapters';
 import { AuditEngine } from '@/lib/audit-engine';
 
 // Demo cases for when database is not connected
@@ -140,29 +140,51 @@ export async function GET(
       );
     }
 
-    // Decrypt API credentials
-    const apiKey = decrypt(firm.casepeerApiKey);
-    const apiUrl = firm.casepeerApiUrl;
+    // Get API credentials - prefer new universal fields, fall back to legacy
+    const apiKey = firm.cmsApiKey || firm.casepeerApiKey;
+    const apiUrl = firm.cmsApiUrl || firm.casepeerApiUrl;
 
-    // Create CasePeer client
-    const client = new EnhancedCasePeerClient(apiUrl, apiKey);
+    if (!apiKey || !apiUrl) {
+      return NextResponse.json(
+        { error: 'Firm API credentials not configured' },
+        { status: 400 }
+      );
+    }
+
+    // Decrypt API credentials
+    const decryptedApiKey = decrypt(apiKey);
+    const decryptedApiSecret = firm.cmsApiSecret ? decrypt(firm.cmsApiSecret) : undefined;
+
+    // Create universal CMS adapter
+    const config: CMSConfig = {
+      provider: (firm.cmsProvider || 'casepeer') as CMSProvider,
+      apiUrl: apiUrl,
+      apiKey: decryptedApiKey,
+      apiSecret: decryptedApiSecret,
+      orgId: firm.cmsOrgId || undefined,
+      endpoints: firm.cmsEndpoints as CMSConfig['endpoints'] || undefined,
+    };
+
+    const adapter = createCMSAdapter(config);
 
     // Test connection first
-    const connectionTest = await client.testConnection();
+    const connectionTest = await adapter.testConnection();
     if (!connectionTest.success) {
       return NextResponse.json(
-        { error: 'Failed to connect to CasePeer API', details: connectionTest.message },
+        { error: `Failed to connect to ${firm.cmsProvider || 'CMS'} API`, details: connectionTest.message },
         { status: 503 }
       );
     }
 
-    // Fetch all cases from CasePeer
-    const allCases = await client.getAllCases();
+    // Fetch all cases from CMS
+    const allCases = await adapter.getCases();
 
     // Generate audit reports for each case to check for missing documents
     const casesWithAudits = await Promise.all(
       allCases.map(async (caseData) => {
-        const caseWithDocs = await client.getCaseWithDocuments(caseData.id);
+        // Fetch documents for this case
+        const documents = await adapter.getDocuments(caseData.id);
+        const caseWithDocs = { ...caseData, documents };
         const audit = AuditEngine.generateAuditReport(caseWithDocs);
 
         return {
@@ -197,7 +219,7 @@ export async function GET(
         hasMore: endIndex < casesWithIssues.length,
       },
       summary: {
-        totalCasesInCasePeer: allCases.length,
+        totalCasesInCMS: allCases.length,
         casesWithIssues: casesWithIssues.length,
         averageScore: casesWithIssues.reduce((sum, c) => sum + c.audit.score, 0) / casesWithIssues.length || 100,
       }

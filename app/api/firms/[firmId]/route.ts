@@ -24,10 +24,15 @@ export async function GET(
       return NextResponse.json({ error: 'Firm not found' }, { status: 404 });
     }
 
-    // Don't send encrypted API key to frontend
-    const { casepeerApiKey, ...firmData } = firm;
+    // Don't send encrypted API keys to frontend
+    const { cmsApiKey, cmsApiSecret, casepeerApiKey, ...firmData } = firm;
 
-    return NextResponse.json({ firm: { ...firmData, hasApiKey: true } });
+    return NextResponse.json({
+      firm: {
+        ...firmData,
+        hasApiKey: !!(cmsApiKey || casepeerApiKey),
+      }
+    });
   } catch (error) {
     console.error('Error fetching firm:', error);
     return NextResponse.json(
@@ -44,18 +49,50 @@ export async function PUT(
 ) {
   try {
     const { firmId } = await params;
-    const { name, contactEmail, contactPhone, casepeerApiUrl, casepeerApiKey, active } =
-      await request.json();
+    const body = await request.json();
+
+    const {
+      name,
+      contactEmail,
+      contactPhone,
+      active,
+      // Universal CMS fields
+      cmsProvider,
+      cmsApiUrl,
+      cmsApiKey,
+      cmsApiSecret,
+      cmsOrgId,
+      cmsEndpoints,
+      // Legacy fields
+      casepeerApiUrl,
+      casepeerApiKey,
+    } = body;
 
     const updateData: any = {
       name,
       contactEmail,
       contactPhone,
-      casepeerApiUrl,
       active,
     };
 
-    // Only update API key if provided (allows updating firm without changing key)
+    // Handle universal CMS fields
+    if (cmsProvider !== undefined) updateData.cmsProvider = cmsProvider;
+    if (cmsApiUrl !== undefined) updateData.cmsApiUrl = cmsApiUrl;
+    if (cmsOrgId !== undefined) updateData.cmsOrgId = cmsOrgId;
+    if (cmsEndpoints !== undefined) updateData.cmsEndpoints = cmsEndpoints;
+
+    // Encrypt API key if provided
+    if (cmsApiKey) {
+      updateData.cmsApiKey = encrypt(cmsApiKey);
+    }
+
+    // Encrypt API secret if provided
+    if (cmsApiSecret) {
+      updateData.cmsApiSecret = encrypt(cmsApiSecret);
+    }
+
+    // Handle legacy fields for backwards compatibility
+    if (casepeerApiUrl !== undefined) updateData.casepeerApiUrl = casepeerApiUrl;
     if (casepeerApiKey) {
       updateData.casepeerApiKey = encrypt(casepeerApiKey);
     }
@@ -65,7 +102,10 @@ export async function PUT(
       data: updateData,
     });
 
-    return NextResponse.json({ firm });
+    // Don't return sensitive data
+    const { cmsApiKey: _, cmsApiSecret: __, casepeerApiKey: ___, ...safeData } = firm;
+
+    return NextResponse.json({ firm: safeData });
   } catch (error) {
     console.error('Error updating firm:', error);
     return NextResponse.json(
@@ -97,7 +137,7 @@ export async function DELETE(
   }
 }
 
-// GET decrypted API key (for scanning purposes only)
+// POST - Get decrypted API credentials (for scanning purposes only)
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ firmId: string }> }
@@ -112,18 +152,40 @@ export async function POST(
 
     const firm = await prisma.firm.findUnique({
       where: { id: firmId },
-      select: { casepeerApiKey: true, casepeerApiUrl: true },
+      select: {
+        cmsProvider: true,
+        cmsApiUrl: true,
+        cmsApiKey: true,
+        cmsApiSecret: true,
+        cmsOrgId: true,
+        cmsEndpoints: true,
+        casepeerApiKey: true,
+        casepeerApiUrl: true,
+      },
     });
 
     if (!firm) {
       return NextResponse.json({ error: 'Firm not found' }, { status: 404 });
     }
 
-    const decryptedApiKey = decrypt(firm.casepeerApiKey);
+    // Prefer new universal fields, fall back to legacy
+    const apiKey = firm.cmsApiKey || firm.casepeerApiKey;
+    const apiUrl = firm.cmsApiUrl || firm.casepeerApiUrl;
+
+    if (!apiKey) {
+      return NextResponse.json({ error: 'No API key configured' }, { status: 400 });
+    }
+
+    const decryptedApiKey = decrypt(apiKey);
+    const decryptedApiSecret = firm.cmsApiSecret ? decrypt(firm.cmsApiSecret) : null;
 
     return NextResponse.json({
+      provider: firm.cmsProvider || 'casepeer',
       apiKey: decryptedApiKey,
-      apiUrl: firm.casepeerApiUrl,
+      apiSecret: decryptedApiSecret,
+      apiUrl: apiUrl,
+      orgId: firm.cmsOrgId,
+      endpoints: firm.cmsEndpoints,
     });
   } catch (error) {
     console.error('Error decrypting API key:', error);

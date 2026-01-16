@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { decrypt } from '@/lib/crypto';
-import { EnhancedCasePeerClient } from '@/lib/casepeer-client-enhanced';
+import { createCMSAdapter, CMSConfig, CMSProvider } from '@/lib/cms-adapters';
 import { AuditEngine } from '@/lib/audit-engine';
 
 export const maxDuration = 60; // 1 minute for single case
@@ -30,6 +30,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Firm not found' }, { status: 404 });
     }
 
+    // Get API credentials - prefer new universal fields, fall back to legacy
+    const apiKey = firm.cmsApiKey || firm.casepeerApiKey;
+    const apiUrl = firm.cmsApiUrl || firm.casepeerApiUrl;
+
+    if (!apiKey || !apiUrl) {
+      return NextResponse.json(
+        { error: 'Firm API credentials not configured' },
+        { status: 400 }
+      );
+    }
+
     // Create audit log
     const auditLog = await prisma.auditLog.create({
       data: {
@@ -40,12 +51,31 @@ export async function POST(request: Request) {
     });
 
     try {
-      // Decrypt API key and create client
-      const apiKey = decrypt(firm.casepeerApiKey);
-      const client = new EnhancedCasePeerClient(firm.casepeerApiUrl, apiKey);
+      // Decrypt API credentials and create universal adapter
+      const decryptedApiKey = decrypt(apiKey);
+      const decryptedApiSecret = firm.cmsApiSecret ? decrypt(firm.cmsApiSecret) : undefined;
 
-      // Fetch case with documents
-      const caseData = await client.getCaseWithDocuments(caseId);
+      const config: CMSConfig = {
+        provider: (firm.cmsProvider || 'casepeer') as CMSProvider,
+        apiUrl: apiUrl,
+        apiKey: decryptedApiKey,
+        apiSecret: decryptedApiSecret,
+        orgId: firm.cmsOrgId || undefined,
+        endpoints: firm.cmsEndpoints as CMSConfig['endpoints'] || undefined,
+      };
+
+      const adapter = createCMSAdapter(config);
+
+      // Fetch case
+      const caseData = await adapter.getCase(caseId);
+
+      if (!caseData) {
+        throw new Error('Case not found');
+      }
+
+      // Fetch documents for this case
+      const documents = await adapter.getDocuments(caseId);
+      caseData.documents = documents;
 
       // Generate audit report
       const audit = AuditEngine.generateAuditReport(caseData);

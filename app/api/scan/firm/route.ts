@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { decrypt } from '@/lib/crypto';
-import { EnhancedCasePeerClient } from '@/lib/casepeer-client-enhanced';
+import { createCMSAdapter, CMSConfig, CMSProvider } from '@/lib/cms-adapters';
 import { AuditEngine } from '@/lib/audit-engine';
 
 export const maxDuration = 300; // 5 minutes for bulk scanning
@@ -37,6 +37,17 @@ export async function POST(request: Request) {
       );
     }
 
+    // Get API credentials - prefer new universal fields, fall back to legacy
+    const apiKey = firm.cmsApiKey || firm.casepeerApiKey;
+    const apiUrl = firm.cmsApiUrl || firm.casepeerApiUrl;
+
+    if (!apiKey || !apiUrl) {
+      return NextResponse.json(
+        { error: 'Firm API credentials not configured' },
+        { status: 400 }
+      );
+    }
+
     // Create audit log
     const auditLog = await prisma.auditLog.create({
       data: {
@@ -51,18 +62,29 @@ export async function POST(request: Request) {
     });
 
     try {
-      // Decrypt API key and create client
-      const apiKey = decrypt(firm.casepeerApiKey);
-      const client = new EnhancedCasePeerClient(firm.casepeerApiUrl, apiKey);
+      // Decrypt API credentials and create universal adapter
+      const decryptedApiKey = decrypt(apiKey);
+      const decryptedApiSecret = firm.cmsApiSecret ? decrypt(firm.cmsApiSecret) : undefined;
+
+      const config: CMSConfig = {
+        provider: (firm.cmsProvider || 'casepeer') as CMSProvider,
+        apiUrl: apiUrl,
+        apiKey: decryptedApiKey,
+        apiSecret: decryptedApiSecret,
+        orgId: firm.cmsOrgId || undefined,
+        endpoints: firm.cmsEndpoints as CMSConfig['endpoints'] || undefined,
+      };
+
+      const adapter = createCMSAdapter(config);
 
       // Test connection first
-      const connectionTest = await client.testConnection();
+      const connectionTest = await adapter.testConnection();
       if (!connectionTest.success) {
-        throw new Error(`CasePeer connection failed: ${connectionTest.message}`);
+        throw new Error(`${firm.cmsProvider || 'CMS'} connection failed: ${connectionTest.message}`);
       }
 
       // Fetch all cases
-      const cases = await client.getAllCases();
+      const cases = await adapter.getCases();
 
       if (cases.length === 0) {
         await prisma.auditLog.update({
@@ -91,7 +113,7 @@ export async function POST(request: Request) {
       for (const caseData of cases) {
         try {
           // Fetch documents for this case
-          const documents = await client.getCaseDocuments(caseData.id);
+          const documents = await adapter.getDocuments(caseData.id);
           caseData.documents = documents;
 
           // Generate audit report
